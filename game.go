@@ -6,6 +6,7 @@ import (
 
     "gopkg.in/telegram-bot-api.v4"
     "strings"
+    "fmt"
 )
 
 func main() {
@@ -13,8 +14,6 @@ func main() {
     if err != nil {
         log.Panic(err)
     }
-
-    //bot.Debug = true
 
     log.Printf("Authorized on account %s", bot.Self.UserName)
 
@@ -30,7 +29,11 @@ func main() {
             continue
         }
 
-        log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
+        commandWithParameters := strings.Fields(update.Message.Text)
+        commandName := commandWithParameters[0]
+        commandParameters := commandWithParameters[1:]
+
+        log.Printf("[%s] %s", update.Message.From.UserName, commandWithParameters)
 
         currentUser := players[update.Message.From.UserName]
 
@@ -45,12 +48,15 @@ func main() {
 
             msg := tgbotapi.NewMessage(
                 update.Message.Chat.ID,
-                "Игроки онлайн: " + strings.Join(getPlayersNames(players), ", "),
+                "Привет!\nИгроки онлайн: " + strings.Join(getPlayersNames(players), ", "),
             )
 
             bot.Send(msg)
         } else {
-            msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
+            msg := tgbotapi.NewMessage(
+                update.Message.Chat.ID,
+                fmt.Sprintf("Введена команда: \"%v\". Параметры: %v", commandName, commandParameters),
+            )
 
             bot.Send(msg)
         }
