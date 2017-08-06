@@ -3,16 +3,16 @@ package main
 import (
     "log"
     "os"
-
-    "gopkg.in/telegram-bot-api.v4"
     "strings"
     "fmt"
+
+    "gopkg.in/telegram-bot-api.v4"
 )
 
 func main() {
-    bot, err := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_APPLICATION_MUD_TOKEN"))
-    if err != nil {
-        log.Panic(err)
+    bot, error := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_APPLICATION_MUD_TOKEN"))
+    if error != nil {
+        log.Panic(error)
     }
 
     log.Printf("Authorized on account %s", bot.Self.UserName)
@@ -20,7 +20,7 @@ func main() {
     update := tgbotapi.NewUpdate(0)
     update.Timeout = 60
 
-    updates, err := bot.GetUpdatesChan(update)
+    updates, error := bot.GetUpdatesChan(update)
 
     players := map[string]*Connection{}
 
@@ -48,7 +48,10 @@ func main() {
 
             msg := tgbotapi.NewMessage(
                 update.Message.Chat.ID,
-                "Привет!\nИгроки онлайн: " + strings.Join(getPlayersNames(players), ", "),
+                "Добро пожаловать на Экспериментальный Полигон!\nИгроки онлайн: " + strings.Join(
+                    getPlayersNames(players),
+                    ", ",
+                ),
             )
 
             bot.Send(msg)
