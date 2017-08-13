@@ -10,17 +10,17 @@ import (
 )
 
 func main() {
-    bot, error := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_APPLICATION_MUD_TOKEN"))
-    if error != nil {
-        log.Panic(error)
+    bot, fault := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_APPLICATION_MUD_TOKEN"))
+    if fault != nil {
+        log.Panic(fault)
     }
 
     log.Printf("Authorized on account %s", bot.Self.UserName)
 
-    update := tgbotapi.NewUpdate(0)
-    update.Timeout = 60
+    updateConfig := tgbotapi.NewUpdate(0)
+    updateConfig.Timeout = 60
 
-    updates, error := bot.GetUpdatesChan(update)
+    updates, _ := bot.GetUpdatesChan(updateConfig)
 
     players := map[string]*Connection{}
 
@@ -36,6 +36,7 @@ func main() {
         log.Printf("[%s] %s", update.Message.From.UserName, commandWithParameters)
 
         currentUser := players[update.Message.From.UserName]
+        var message tgbotapi.MessageConfig
 
         if currentUser == nil {
             currentUser = &Connection{
@@ -46,23 +47,21 @@ func main() {
 
             players[update.Message.From.UserName] = currentUser
 
-            msg := tgbotapi.NewMessage(
+            message = tgbotapi.NewMessage(
                 update.Message.Chat.ID,
                 "Добро пожаловать на Экспериментальный Полигон!\nИгроки онлайн: " + strings.Join(
                     getPlayersNames(players),
                     ", ",
                 ),
             )
-
-            bot.Send(msg)
         } else {
-            msg := tgbotapi.NewMessage(
+            message = tgbotapi.NewMessage(
                 update.Message.Chat.ID,
                 fmt.Sprintf("Введена команда: \"%v\". Параметры: %v", commandName, commandParameters),
             )
-
-            bot.Send(msg)
         }
+
+        bot.Send(message)
     }
 }
 
