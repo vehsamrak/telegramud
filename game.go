@@ -4,6 +4,7 @@ import (
     "log"
     "os"
     "strings"
+    "bytes"
     "gopkg.in/telegram-bot-api.v4"
 
     "github.com/Vehsamrak/telegramud/commands"
@@ -79,7 +80,9 @@ func getPlayersNames(players map[string]*commands.Connection) []string {
 }
 
 func parseCommand(update tgbotapi.Update) (commandName string, commandParameters []string) {
-    commandWithParameters := strings.Fields(update.Message.Text)
+    rawCommand := string(bytes.Trim([]byte(update.Message.Text), "\r\n\x00"))
+    rawCommand = strings.TrimSpace(rawCommand)
+    commandWithParameters := strings.Fields(rawCommand)
 
     log.Printf("[%s] %s", update.Message.From.UserName, commandWithParameters)
 
