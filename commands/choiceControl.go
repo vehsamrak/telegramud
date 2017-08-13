@@ -13,7 +13,7 @@ type ChoiceControl struct {
 }
 
 func (choice *ChoiceControl) GetFailedMessage() string {
-    return fmt.Sprint("Неверный выбор.")
+    return fmt.Sprintf("Неверный выбор. %v", choice.GetQuestionMessage())
 }
 
 func (choice *ChoiceControl) GetQuestionMessage() string {

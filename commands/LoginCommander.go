@@ -23,7 +23,7 @@ func (commander *LoginCommander) ExecuteCommand(command string, commandParameter
             commander.Stage = commander.Choice.AfterStage
             commander.Choice = ChoiceControl{}
         } else {
-            result = commander.Choice.GetQuestionMessage()
+            result = commander.Choice.GetFailedMessage()
         }
     }
 
