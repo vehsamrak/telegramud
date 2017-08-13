@@ -55,12 +55,11 @@ func main() {
                     ", ",
                 ),
             )
-
-            message.ParseMode = "markdown"
         } else {
             message = currentUser.Executor.ExecuteCommand(commandName, commandParameters).Message
         }
 
+        message.ParseMode = "markdown"
         bot.Send(message)
     }
 }
