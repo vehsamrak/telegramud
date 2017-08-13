@@ -29,22 +29,19 @@ func main() {
             continue
         }
 
-        commandWithParameters := strings.Fields(update.Message.Text)
-        commandName := commandWithParameters[0]
-        commandParameters := commandWithParameters[1:]
-
-        log.Printf("[%s] %s", update.Message.From.UserName, commandWithParameters)
-
+        commandName, commandParameters := parseCommand(update)
         currentUser := players[update.Message.From.UserName]
-        var message tgbotapi.MessageConfig
+        executorFactory := commands.ExecutorFactory{}
 
+        var message tgbotapi.MessageConfig
         if currentUser == nil {
             currentUser = &commands.Connection{
                 ChatId:   update.Message.Chat.ID,
                 UserName: update.Message.From.UserName,
             }
 
-            currentUser.Executor = &commands.LoginCommander{Connection: currentUser}
+            executor := executorFactory.Create(commands.EXECUTOR_LOGIN, currentUser)
+            currentUser.SetExecutor(executor)
 
             players[update.Message.From.UserName] = currentUser
 
@@ -56,7 +53,14 @@ func main() {
                 ),
             )
         } else {
-            message = currentUser.Executor.ExecuteCommand(commandName, commandParameters).Message
+            commandResult := currentUser.GetExecutor().ExecuteCommand(commandName, commandParameters)
+            message = commandResult.Message
+            executorName := commandResult.ExecutorName
+
+            if executorName != "" {
+                executor := executorFactory.Create(executorName, currentUser)
+                currentUser.SetExecutor(executor)
+            }
         }
 
         message.ParseMode = "markdown"
@@ -72,4 +76,12 @@ func getPlayersNames(players map[string]*commands.Connection) []string {
     }
 
     return playerNames
+}
+
+func parseCommand(update tgbotapi.Update) (commandName string, commandParameters []string) {
+    commandWithParameters := strings.Fields(update.Message.Text)
+
+    log.Printf("[%s] %s", update.Message.From.UserName, commandWithParameters)
+
+    return commandWithParameters[0], commandWithParameters[1:]
 }

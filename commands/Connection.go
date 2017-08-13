@@ -1,7 +1,15 @@
 package commands
 
 type Connection struct {
-    ChatId   int64
-    UserName string
-    Executor Executor
+    executor         Executor
+    ChatId           int64
+    UserName         string
+}
+
+func (connection *Connection) GetExecutor() Executor {
+    return connection.executor
+}
+
+func (connection *Connection) SetExecutor(executor Executor) {
+    connection.executor = executor
 }

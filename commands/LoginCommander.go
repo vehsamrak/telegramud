@@ -6,7 +6,7 @@ import (
 )
 
 type LoginCommander struct {
-    Connection *Connection
+    AbstractCommander
     Stage      string
     Choice     ChoiceControl
 }
@@ -15,6 +15,7 @@ func (commander *LoginCommander) ExecuteCommand(command string, commandParameter
     commandResult CommandResult,
 ) {
     var result string
+    var executorName string
 
     if commander.Choice.Question != "" {
         commander.Choice.Answer = command
@@ -33,20 +34,25 @@ func (commander *LoginCommander) ExecuteCommand(command string, commandParameter
             commander.Choice = ChoiceControl{
                 Question: "Сделайте свой выбор",
                 AvailableAnswers: []string{"один", "два", "три"},
-                AfterStage: "2",
+                AfterStage: "enterGame",
             }
 
             result = commander.Choice.GetQuestionMessage()
-        case "2":
+        case "enterGame":
             result = fmt.Sprint("Выбор сделан.")
+            executorName = "game"
         }
     }
 
     commandResult = CommandResult{
         Message: tgbotapi.NewMessage(
-            commander.Connection.ChatId,
+            commander.connection.ChatId,
             result,
         ),
+    }
+
+    if executorName != "" {
+        commandResult.ExecutorName = executorName
     }
 
     return commandResult
