@@ -49,7 +49,7 @@ func (commander *GameCommander) findCommandByName(requestedCommandName string) (
 func (commander *GameCommander) createAllCommands() []Command  {
     return []Command{
         Test{},
-        //Look{},
-        //Who{},
+        Look{},
+        Who{},
     }
 }

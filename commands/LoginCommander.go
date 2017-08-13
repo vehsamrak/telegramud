@@ -1,7 +1,6 @@
 package commands
 
 import (
-    "fmt"
     "gopkg.in/telegram-bot-api.v4"
 )
 
@@ -32,14 +31,14 @@ func (commander *LoginCommander) ExecuteCommand(command string, commandParameter
         switch commander.Stage {
         case "":
             commander.Choice = ChoiceControl{
-                Question: "Сделайте свой выбор",
+                Question: "Сделай свой выбор",
                 AvailableAnswers: []string{"один", "два", "три"},
                 AfterStage: "enterGame",
             }
 
             result = commander.Choice.GetQuestionMessage()
         case "enterGame":
-            result = fmt.Sprint("Выбор сделан.")
+            result = "Ты осмотрелся.\n" + Look{}.Execute()
             executorName = "game"
         }
     }
