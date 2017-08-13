@@ -3,7 +3,9 @@ package commands
 const EXECUTOR_LOGIN string = "login"
 const EXECUTOR_GAME string = "game"
 
-type ExecutorFactory struct {}
+type ExecutorFactory struct {
+    ConnectionPool map[string]*Connection
+}
 
 func (factory *ExecutorFactory) Create(executorName string, connection *Connection) (executor Executor) {
     switch executorName {
@@ -14,6 +16,7 @@ func (factory *ExecutorFactory) Create(executorName string, connection *Connecti
     }
 
     executor.SetConnection(connection)
+    executor.SetConnectionPool(factory.ConnectionPool)
 
     return executor
 }

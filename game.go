@@ -32,7 +32,7 @@ func main() {
 
         commandName, commandParameters := parseCommand(update)
         currentUser := players[update.Message.From.UserName]
-        executorFactory := commands.ExecutorFactory{}
+        executorFactory := commands.ExecutorFactory{ConnectionPool: players}
 
         var message tgbotapi.MessageConfig
         if currentUser == nil {
