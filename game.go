@@ -6,7 +6,6 @@ import (
     "strings"
     "gopkg.in/telegram-bot-api.v4"
 
-    "github.com/Vehsamrak/telegramud/models"
     "github.com/Vehsamrak/telegramud/commands"
 )
 
@@ -23,7 +22,7 @@ func main() {
 
     updates, _ := bot.GetUpdatesChan(updateConfig)
 
-    players := map[string]*models.Connection{}
+    players := map[string]*commands.Connection{}
 
     for update := range updates {
         if update.Message == nil || update.Message.Text == "" {
@@ -40,11 +39,12 @@ func main() {
         var message tgbotapi.MessageConfig
 
         if currentUser == nil {
-            currentUser = &models.Connection{
-                ChatId: update.Message.Chat.ID,
+            currentUser = &commands.Connection{
+                ChatId:   update.Message.Chat.ID,
                 UserName: update.Message.From.UserName,
-                Stage: "login",
             }
+
+            currentUser.Executor = &commands.LoginCommander{Connection: currentUser}
 
             players[update.Message.From.UserName] = currentUser
 
@@ -58,15 +58,14 @@ func main() {
 
             message.ParseMode = "markdown"
         } else {
-            commander := commands.Commander{Connection: currentUser}
-            message = commander.ExecuteCommand(commandName, commandParameters).Message
+            message = currentUser.Executor.ExecuteCommand(commandName, commandParameters).Message
         }
 
         bot.Send(message)
     }
 }
 
-func getPlayersNames(players map[string]*models.Connection) []string {
+func getPlayersNames(players map[string]*commands.Connection) []string {
     var playerNames []string
 
     for _, player := range players {
