@@ -25,7 +25,7 @@ func main() {
     players := map[string]*Connection{}
 
     for update := range updates {
-        if update.Message == nil {
+        if update.Message == nil || update.Message.Text == "" {
             continue
         }
 
