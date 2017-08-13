@@ -7,8 +7,9 @@ import (
 
 type ChoiceControl struct {
     Question         string
-    AvailableAnswers map [string] bool
+    AvailableAnswers []string
     Answer           string
+    AfterStage       string
 }
 
 func (choice *ChoiceControl) GetFailedMessage() string {
@@ -16,19 +17,19 @@ func (choice *ChoiceControl) GetFailedMessage() string {
 }
 
 func (choice *ChoiceControl) GetQuestionMessage() string {
-    return fmt.Sprintf("%v. [%v]", choice.Question, strings.Join(choice.getAvailableAnswers(), ", "))
+    return fmt.Sprintf("%v: %v.", choice.Question, strings.Join(choice.AvailableAnswers, ", "))
 }
 
 func (choice *ChoiceControl) CheckAnswer() bool {
-    return choice.AvailableAnswers[choice.Answer]
+    return contains(choice.Answer, choice.AvailableAnswers)
 }
 
-func (choice *ChoiceControl) getAvailableAnswers() []string {
-    var readableAnswers []string
-
-    for answer := range choice.AvailableAnswers {
-        readableAnswers = append(readableAnswers, answer)
+func contains(e string, s []string) bool {
+    for _, a := range s {
+        if a == e {
+            return true
+        }
     }
 
-    return readableAnswers
+    return false
 }
