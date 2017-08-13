@@ -13,11 +13,11 @@ type ChoiceControl struct {
 }
 
 func (choice *ChoiceControl) GetFailedMessage() string {
-    return fmt.Sprintf("Неверный выбор. %v", choice.GetQuestionMessage())
+    return fmt.Sprintf("Неверный выбор. Доступно: *%v*.", strings.Join(choice.AvailableAnswers, "*, *"))
 }
 
 func (choice *ChoiceControl) GetQuestionMessage() string {
-    return fmt.Sprintf("%v: %v.", choice.Question, strings.Join(choice.AvailableAnswers, ", "))
+    return fmt.Sprintf("%v: *%v*.", choice.Question, strings.Join(choice.AvailableAnswers, "*, *"))
 }
 
 func (choice *ChoiceControl) CheckAnswer() bool {
