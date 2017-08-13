@@ -50,11 +50,13 @@ func main() {
 
             message = tgbotapi.NewMessage(
                 update.Message.Chat.ID,
-                "Добро пожаловать на Экспериментальный Полигон!\nИгроки онлайн: " + strings.Join(
+                "Добро пожаловать на *Экспериментальный Полигон*!\nИгроки онлайн: " + strings.Join(
                     getPlayersNames(players),
                     ", ",
                 ),
             )
+
+            message.ParseMode = "markdown"
         } else {
             commander := commands.Commander{Connection: currentUser}
             message = commander.ExecuteCommand(commandName, commandParameters).Message
