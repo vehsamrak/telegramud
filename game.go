@@ -86,5 +86,7 @@ func parseCommand(update tgbotapi.Update) (commandName string, commandParameters
 
     log.Printf("[%s] %s", update.Message.From.UserName, commandWithParameters)
 
-    return commandWithParameters[0], commandWithParameters[1:]
+    commandName = strings.ToLower(commandWithParameters[0])
+
+    return commandName, commandWithParameters[1:]
 }
