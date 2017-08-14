@@ -15,7 +15,7 @@ func (commander *GameCommander) ExecuteCommand(commandName string, commandParame
 ) {
     var result string
 
-    command := commander.findCommandByName(commandName)
+    command := commander.findCommand(commandName, commandParameters)
 
     if command == nil {
         result = fmt.Sprintf("Команда \"%v\" не найдена.", commandName)
@@ -33,8 +33,8 @@ func (commander *GameCommander) ExecuteCommand(commandName string, commandParame
     return commandResult
 }
 
-func (commander *GameCommander) findCommandByName(requestedCommandName string) (resultCommand Command) {
-    for _, command := range commander.createAllCommands() {
+func (commander *GameCommander) findCommand(requestedCommandName string, commandParameters []string) (resultCommand Command) {
+    for _, command := range commander.createAllCommands(commandParameters) {
         for _, commandName := range command.GetNames() {
             if strings.HasPrefix(commandName, requestedCommandName) {
                 return command
@@ -46,10 +46,15 @@ func (commander *GameCommander) findCommandByName(requestedCommandName string) (
 }
 
 // All game commands are created by this method
-func (commander *GameCommander) createAllCommands() []Command  {
+func (commander *GameCommander) createAllCommands(commandParameters []string) []Command  {
     return []Command{
         Test{},
         Look{},
         Who{},
+        &Chat{
+            Sender: *commander.connection,
+            ConnectionPool: commander.connectionPool,
+            Message: strings.Join(commandParameters, " "),
+        },
     }
 }
