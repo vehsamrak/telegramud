@@ -56,5 +56,9 @@ func (commander *GameCommander) createAllCommands(commandParameters []string) []
             ConnectionPool: commander.connectionPool,
             Message: strings.Join(commandParameters, " "),
         },
+        &Help{
+            Commander: commander,
+            Parameters: commandParameters,
+        },
     }
 }
