@@ -18,7 +18,7 @@ func (commander *GameCommander) ExecuteCommand(commandName string, commandParame
     command := commander.findCommand(commandName, commandParameters)
 
     if command == nil {
-        result = fmt.Sprintf("Команда \"%v\" не найдена.", commandName)
+        result = fmt.Sprintf("Команда \"%v\" не найдена. Список доступен по команде *помощь*.", commandName)
     } else {
         result = command.Execute()
     }
