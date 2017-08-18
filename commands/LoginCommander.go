@@ -31,8 +31,8 @@ func (commander *LoginCommander) ExecuteCommand(command string, commandParameter
         switch commander.Stage {
         case "":
             commander.Choice = ChoiceControl{
-                Question: "Сделай свой выбор",
-                AvailableAnswers: []string{"один", "два", "три"},
+                Question: "Выберите свой класс",
+                AvailableAnswers: []string{"воин", "лучник", "маг"},
                 AfterStage: "enterGame",
             }
 
