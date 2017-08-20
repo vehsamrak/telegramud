@@ -7,7 +7,7 @@ import (
     "bytes"
     "gopkg.in/telegram-bot-api.v4"
 
-    "github.com/Vehsamrak/telegramud/commands"
+    "github.com/Vehsamrak/telegramud/internal/commands"
 )
 
 func main() {

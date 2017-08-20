@@ -3,7 +3,7 @@ package tests
 import (
     "testing"
     "github.com/stretchr/testify/assert"
-    "github.com/Vehsamrak/telegramud/commands"
+    "github.com/Vehsamrak/telegramud/internal/commands"
 )
 
 func TestGetNames(test *testing.T) {
