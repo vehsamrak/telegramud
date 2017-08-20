@@ -7,5 +7,9 @@ go:
 
 go_import_path: github.com/Vehsamrak/telegramud
 
+install:
+  - go get ./internal/...
+  - go get github.com/stretchr/testify
+
 script:
   - go test ./tests/...
