@@ -1,14 +1,14 @@
 package commands
 
 type AbstractCommander struct {
-    connection *Connection
-    connectionPool map[string]*Connection
+	connection     *Connection
+	connectionPool map[string]*Connection
 }
 
 func (commander *AbstractCommander) SetConnection(connection *Connection) {
-    commander.connection = connection
+	commander.connection = connection
 }
 
 func (commander *AbstractCommander) SetConnectionPool(connectionPool map[string]*Connection) {
-    commander.connectionPool = connectionPool
+	commander.connectionPool = connectionPool
 }

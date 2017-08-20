@@ -1,58 +1,58 @@
 package commands
 
 import (
-    "gopkg.in/telegram-bot-api.v4"
+	"gopkg.in/telegram-bot-api.v4"
 )
 
 type LoginCommander struct {
-    AbstractCommander
-    Stage      string
-    Choice     ChoiceControl
+	AbstractCommander
+	Stage  string
+	Choice ChoiceControl
 }
 
 func (commander *LoginCommander) ExecuteCommand(command string, commandParameters []string) (
-    commandResult CommandResult,
+	commandResult CommandResult,
 ) {
-    var result string
-    var executorName string
+	var result string
+	var executorName string
 
-    if commander.Choice.Question != "" {
-        commander.Choice.Answer = command
+	if commander.Choice.Question != "" {
+		commander.Choice.Answer = command
 
-        if commander.Choice.CheckAnswer() {
-            commander.Stage = commander.Choice.AfterStage
-            commander.Choice = ChoiceControl{}
-        } else {
-            result = commander.Choice.GetFailedMessage()
-        }
-    }
+		if commander.Choice.CheckAnswer() {
+			commander.Stage = commander.Choice.AfterStage
+			commander.Choice = ChoiceControl{}
+		} else {
+			result = commander.Choice.GetFailedMessage()
+		}
+	}
 
-    if result == "" {
-        switch commander.Stage {
-        case "":
-            commander.Choice = ChoiceControl{
-                Question: "Выберите свой класс",
-                AvailableAnswers: []string{"воин", "лучник", "маг"},
-                AfterStage: "enterGame",
-            }
+	if result == "" {
+		switch commander.Stage {
+		case "":
+			commander.Choice = ChoiceControl{
+				Question:         "Выберите свой класс",
+				AvailableAnswers: []string{"воин", "лучник", "маг"},
+				AfterStage:       "enterGame",
+			}
 
-            result = commander.Choice.GetQuestionMessage()
-        case "enterGame":
-            result = "Ты осмотрелся.\n" + Look{}.Execute()
-            executorName = "game"
-        }
-    }
+			result = commander.Choice.GetQuestionMessage()
+		case "enterGame":
+			result = "Ты осмотрелся.\n" + Look{}.Execute()
+			executorName = "game"
+		}
+	}
 
-    commandResult = CommandResult{
-        Message: tgbotapi.NewMessage(
-            commander.connection.ChatId,
-            result,
-        ),
-    }
+	commandResult = CommandResult{
+		Message: tgbotapi.NewMessage(
+			commander.connection.ChatId,
+			result,
+		),
+	}
 
-    if executorName != "" {
-        commandResult.ExecutorName = executorName
-    }
+	if executorName != "" {
+		commandResult.ExecutorName = executorName
+	}
 
-    return commandResult
+	return commandResult
 }
