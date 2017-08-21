@@ -6,10 +6,10 @@ import (
     "github.com/Vehsamrak/telegramud/internal/commands"
 )
 
-func TestGetNames(test *testing.T) {
-    testCommand := commands.Test{}
+func TestTest_GetNames_emptyParameters_stringReturned(test *testing.T) {
+    command := commands.Test{}
 
-    commandResult := testCommand.Execute()
+    commandResult := command.Execute()
 
     assert.Equal(test, commandResult, "Тест пройден!")
 }
