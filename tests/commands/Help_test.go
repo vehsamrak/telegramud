@@ -13,7 +13,6 @@ func TestHelp(test *testing.T) {
 
 type HelpTest struct {
     suite.Suite
-    VariableThatShouldStartAtFive int
 }
 
 func (suite *HelpTest) SetupTest() {}
