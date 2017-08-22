@@ -32,14 +32,14 @@ func (commander *LoginCommander) ExecuteCommand(command string, commandParameter
     if result == "" {
         switch commander.Stage {
         case "":
-            //	commander.Choice = ChoiceControl{
-            //		Question:         "Выберите свой класс",
-            //		AvailableAnswers: []string{"воин", "лучник", "маг"},
-            //		AfterStage:       "enterGame",
-            //	}
-            //
-            //	result = commander.Choice.GetQuestionMessage()
-            //case "enterGame":
+            	commander.Choice = ChoiceControl{
+            		Question:         "Выберите свой класс",
+            		AvailableAnswers: []string{"воин", "лучник", "маг"},
+            		AfterStage:       "enterGame",
+            	}
+
+            	result = commander.Choice.GetQuestionMessage()
+            case "enterGame":
             result = "Ты осмотрелся.\n" + Look{}.Execute()
             executorName = "game"
         }
