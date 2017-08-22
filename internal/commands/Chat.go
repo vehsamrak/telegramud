@@ -15,7 +15,7 @@ type Chat struct {
 }
 
 func (command *Chat) GetNames() []string {
-    return []string{"chat", "чат"}
+    return []string{"chat", "talk", "tell", "чат", "говорить"}
 }
 
 func (command *Chat) Execute() (result string) {
