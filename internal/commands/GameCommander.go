@@ -53,7 +53,9 @@ func (commander *GameCommander) createAllCommands(commandParameters []string) []
     return []Command{
         Test{},
         Look{},
-        Who{},
+        &Who{
+            ConnectionPool: commander.connectionPool,
+        },
         &Chat{
             Messenger:      commander.Messenger,
             Sender:         *commander.connection,

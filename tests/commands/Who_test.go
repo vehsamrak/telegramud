@@ -22,5 +22,5 @@ func (suite *WhoTest) TestGetNames_emptyParameters_stringReturned() {
 
     commandResult := command.Execute()
 
-    assert.Equal(suite.T(), commandResult, "В этом мире нет никого лучше тебя.")
+    assert.Equal(suite.T(), commandResult, "Игроки онлайн: ")
 }
