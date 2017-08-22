@@ -4,14 +4,18 @@ import (
     "fmt"
     "gopkg.in/telegram-bot-api.v4"
     "strings"
+
+    "github.com/Vehsamrak/telegramud/internal/services"
+    "github.com/Vehsamrak/telegramud/internal"
 )
 
 type GameCommander struct {
     AbstractCommander
+    Messenger *services.Messenger
 }
 
 func (commander *GameCommander) ExecuteCommand(commandName string, commandParameters []string) (
-    commandResult CommandResult,
+    commandResult internal.CommandResult,
 ) {
     var result string
 
@@ -23,11 +27,10 @@ func (commander *GameCommander) ExecuteCommand(commandName string, commandParame
         result = command.Execute()
     }
 
-    commandResult = CommandResult{
-        Message: tgbotapi.NewMessage(
-            commander.connection.ChatId,
-            result,
-        ),
+    if result == "" {
+        commandResult.IsEmpty = true
+    } else {
+        commandResult.Message = tgbotapi.NewMessage(commander.connection.ChatId, result)
     }
 
     return commandResult
@@ -52,6 +55,7 @@ func (commander *GameCommander) createAllCommands(commandParameters []string) []
         Look{},
         Who{},
         &Chat{
+            Messenger:      commander.Messenger,
             Sender:         *commander.connection,
             ConnectionPool: commander.connectionPool,
             Message:        strings.Join(commandParameters, " "),

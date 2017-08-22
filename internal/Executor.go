@@ -1,4 +1,4 @@
-package commands
+package internal
 
 type Executor interface {
     ExecuteCommand(command string, commandParameters []string) (commandResult CommandResult)

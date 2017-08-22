@@ -1,4 +1,4 @@
-package commands
+package internal
 
 type Connection struct {
 	executor Executor
