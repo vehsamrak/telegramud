@@ -15,5 +15,5 @@ CREATE UNIQUE INDEX users_name_uindex ON public.users (name);
 
 \connect telegramud postgres
 
-DROP DATABASE telegramud_test;
+DROP DATABASE IF EXISTS telegramud_test;
 CREATE DATABASE telegramud_test WITH TEMPLATE telegramud OWNER telegramud;
