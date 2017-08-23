@@ -1,4 +1,3 @@
-CREATE DATABASE telegramud;
 CREATE USER telegramud WITH password 'telegramud';
 GRANT ALL ON DATABASE telegramud TO telegramud;
 
@@ -13,3 +12,8 @@ CREATE TABLE public.users
   race VARCHAR(25) DEFAULT NULL
 );
 CREATE UNIQUE INDEX users_name_uindex ON public.users (name);
+
+\connect telegramud postgres
+
+DROP DATABASE telegramud_test;
+CREATE DATABASE telegramud_test WITH TEMPLATE telegramud OWNER telegramud;
