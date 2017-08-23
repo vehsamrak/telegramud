@@ -2,6 +2,9 @@ CREATE DATABASE telegramud;
 CREATE USER telegramud WITH password 'telegramud';
 GRANT ALL ON DATABASE telegramud TO telegramud;
 
+-- changing active database
+\connect telegramud telegramud
+
 -- User --
 CREATE TABLE public.users
 (
