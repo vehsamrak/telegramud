@@ -1,5 +1,12 @@
 #!/bin/bash
 
 PGPASSWORD=postgres
+PG_HOST=localhost
+PG_USER=postgres
+PG_DATABASE=postgres
+TIMEOUT=10
 
-psql -h localhost -p 5433 -U postgres  -f init.sql
+until psql -h ${PG_HOST} -p 5433 -U ${PG_USER} -f init.sql || [ ${TIMEOUT} -eq 0 ]; do
+  echo "Waiting for postgres server, $((TIMEOUT--)) remaining attempts..."
+  sleep 3
+done
