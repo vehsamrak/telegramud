@@ -1,5 +1,5 @@
 CREATE USER telegramud WITH password 'telegramud';
-GRANT ALL ON DATABASE telegramud TO telegramud;
+CREATE DATABASE telegramud OWNER telegramud;
 
 -- changing active database
 \connect telegramud telegramud
