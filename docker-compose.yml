@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+  database:
+    container_name: telegramud_database
+    image: postgres:9.6
+    volumes:
+      - database-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  database-data:
