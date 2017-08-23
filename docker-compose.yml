@@ -4,8 +4,8 @@ services:
   database:
     container_name: telegramud_database
     image: postgres:9.6
-    volumes:
-      - database-data:/var/lib/postgresql/data
+#    volumes:
+#      - database-data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
 
