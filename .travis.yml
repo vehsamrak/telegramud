@@ -20,6 +20,7 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
   - docker-compose --version
   - docker-compose up -d
+  - sleep 10
   - cd infrastructure && ./init.sh
 
 install:
