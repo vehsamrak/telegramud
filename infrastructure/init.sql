@@ -7,11 +7,9 @@ CREATE DATABASE telegramud OWNER telegramud;
 -- User --
 CREATE TABLE public.users
 (
-  id SERIAL PRIMARY KEY NOT NULL,
-  name VARCHAR(25),
+  name VARCHAR(25) PRIMARY KEY,
   race VARCHAR(25) DEFAULT NULL
 );
-CREATE UNIQUE INDEX users_name_uindex ON public.users (name);
 
 \connect telegramud postgres
 
