@@ -11,14 +11,18 @@ const EXECUTOR_GAME string = "game"
 type ExecutorFactory struct {
     Messenger      *services.Messenger
     ConnectionPool map[string]*internal.Connection
+    Database       *services.Database
 }
 
 func (factory *ExecutorFactory) Create(executorName string, connection *internal.Connection) (executor internal.Executor) {
     switch executorName {
     case EXECUTOR_GAME:
-        executor = &GameCommander{Messenger: factory.Messenger}
+        executor = &GameCommander{
+            Messenger: factory.Messenger,
+            Database:  factory.Database,
+        }
     case EXECUTOR_LOGIN:
-        executor = &LoginCommander{}
+        executor = &LoginCommander{Database: factory.Database}
     }
 
     executor.SetConnection(connection)

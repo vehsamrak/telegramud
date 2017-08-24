@@ -13,6 +13,10 @@ import (
     "github.com/Vehsamrak/telegramud/internal/entities"
 )
 
+var (
+    database = &services.Database{}
+)
+
 func main() {
     telegramBot, fault := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_APPLICATION_MUD_TOKEN"))
     if fault != nil {
@@ -21,6 +25,9 @@ func main() {
 
     log.Printf("Authorized on account %s", telegramBot.Self.UserName)
 
+    databaseConnection := database.GetConnection()
+    defer databaseConnection.Close()
+
     updateConfig := tgbotapi.NewUpdate(0)
     updateConfig.Timeout = 60
 
@@ -28,7 +35,7 @@ func main() {
 
     players := map[string]*internal.Connection{}
     messenger := &services.Messenger{
-        TelegramBot: telegramBot,
+        TelegramBot:    telegramBot,
         ConnectionPool: players,
     }
 
@@ -42,12 +49,13 @@ func main() {
         executorFactory := commands.ExecutorFactory{
             ConnectionPool: players,
             Messenger:      messenger,
+            Database:       database,
         }
 
         var message tgbotapi.MessageConfig
         if currentUser == nil {
             currentUser = &internal.Connection{
-                ChatId:   update.Message.Chat.ID,
+                ChatId: update.Message.Chat.ID,
                 User: entities.User{
                     UserName: update.Message.From.UserName,
                 },

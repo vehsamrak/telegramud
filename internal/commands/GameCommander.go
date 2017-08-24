@@ -12,6 +12,7 @@ import (
 type GameCommander struct {
     AbstractCommander
     Messenger *services.Messenger
+    Database  *services.Database
 }
 
 func (commander *GameCommander) ExecuteCommand(commandName string, commandParameters []string) (

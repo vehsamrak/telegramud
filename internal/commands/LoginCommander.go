@@ -4,12 +4,14 @@ import (
     "gopkg.in/telegram-bot-api.v4"
 
     "github.com/Vehsamrak/telegramud/internal"
+    "github.com/Vehsamrak/telegramud/internal/services"
 )
 
 type LoginCommander struct {
     AbstractCommander
-    Stage  string
-    Choice ChoiceControl
+    Stage    string
+    Choice   ChoiceControl
+    Database *services.Database
 }
 
 func (commander *LoginCommander) ExecuteCommand(command string, commandParameters []string) (
@@ -22,6 +24,7 @@ func (commander *LoginCommander) ExecuteCommand(command string, commandParameter
         commander.Choice.Answer = command
 
         if commander.Choice.CheckAnswer() {
+            commander.Choice.ResultFunction(commander.Choice.Answer)
             commander.Stage = commander.Choice.AfterStage
             commander.Choice = ChoiceControl{}
         } else {
@@ -36,9 +39,11 @@ func (commander *LoginCommander) ExecuteCommand(command string, commandParameter
                 Question:         "Выбери свой класс",
                 AvailableAnswers: []string{"воин", "лучник", "маг"},
                 AfterStage:       "enterGame",
+                ResultFunction: func(answer string) {
+                    commander.connection.User.Race = commander.Choice.Answer
+                    commander.connection.User.Save(commander.Database.GetConnection())
+                },
             }
-
-            //commander.Choice.Answer
 
             result = commander.Choice.GetQuestionMessage()
         case "enterGame":
