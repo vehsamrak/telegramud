@@ -10,6 +10,7 @@ import (
     "github.com/Vehsamrak/telegramud/internal/commands"
     "github.com/Vehsamrak/telegramud/internal"
     "github.com/Vehsamrak/telegramud/internal/services"
+    "github.com/Vehsamrak/telegramud/internal/entities"
 )
 
 func main() {
@@ -47,7 +48,9 @@ func main() {
         if currentUser == nil {
             currentUser = &internal.Connection{
                 ChatId:   update.Message.Chat.ID,
-                UserName: update.Message.From.UserName,
+                User: entities.User{
+                    UserName: update.Message.From.UserName,
+                },
             }
 
             executor := executorFactory.Create(commands.EXECUTOR_LOGIN, currentUser)
@@ -86,7 +89,7 @@ func getPlayersNames(players map[string]*internal.Connection) []string {
     var playerNames []string
 
     for _, player := range players {
-        playerNames = append(playerNames, player.UserName)
+        playerNames = append(playerNames, player.User.UserName)
     }
 
     return playerNames

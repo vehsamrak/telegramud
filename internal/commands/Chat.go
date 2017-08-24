@@ -19,7 +19,7 @@ func (command *Chat) GetNames() []string {
 }
 
 func (command *Chat) Execute() (result string) {
-    chatMessage := fmt.Sprintf("%v говорит: *%v*", command.Sender.UserName, command.Message)
+    chatMessage := fmt.Sprintf("%v говорит: *%v*", command.Sender.User.UserName, command.Message)
     command.Messenger.SendToAll(chatMessage)
 
     return

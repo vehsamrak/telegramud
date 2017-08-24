@@ -38,6 +38,8 @@ func (commander *LoginCommander) ExecuteCommand(command string, commandParameter
                 AfterStage:       "enterGame",
             }
 
+            //commander.Choice.Answer
+
             result = commander.Choice.GetQuestionMessage()
         case "enterGame":
             result = "Ты осмотрелся.\n" + Look{}.Execute()

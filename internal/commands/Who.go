@@ -20,7 +20,7 @@ func (command *Who) Execute() string {
 
 func (command *Who) getOnlinePlayersNames() (playerNames []string) {
     for _, player := range command.ConnectionPool {
-        playerNames = append(playerNames, player.UserName)
+        playerNames = append(playerNames, player.User.UserName)
     }
 
     return
