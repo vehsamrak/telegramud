@@ -13,3 +13,9 @@ type User struct {
 func (user *User) Save(database *gorm.DB) {
     database.Save(user)
 }
+
+func (user *User) FindByName(database *gorm.DB, username string) *User {
+    database.Where("name = ?", username).First(user)
+
+    return user
+}

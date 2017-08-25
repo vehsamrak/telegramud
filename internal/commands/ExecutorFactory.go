@@ -2,7 +2,6 @@ package commands
 
 import (
     "github.com/Vehsamrak/telegramud/internal/services"
-    "github.com/Vehsamrak/telegramud/internal"
 )
 
 const EXECUTOR_LOGIN string = "login"
@@ -10,11 +9,11 @@ const EXECUTOR_GAME string = "game"
 
 type ExecutorFactory struct {
     Messenger      *services.Messenger
-    ConnectionPool map[string]*internal.Connection
+    ConnectionPool map[string]*services.Connection
     Database       *services.Database
 }
 
-func (factory *ExecutorFactory) Create(executorName string, connection *internal.Connection) (executor internal.Executor) {
+func (factory *ExecutorFactory) Create(executorName string, connection *services.Connection) (executor services.Executor) {
     switch executorName {
     case EXECUTOR_GAME:
         executor = &GameCommander{

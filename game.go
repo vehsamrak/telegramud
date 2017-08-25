@@ -8,7 +8,6 @@ import (
     "strings"
 
     "github.com/Vehsamrak/telegramud/internal/commands"
-    "github.com/Vehsamrak/telegramud/internal"
     "github.com/Vehsamrak/telegramud/internal/services"
     "github.com/Vehsamrak/telegramud/internal/entities"
 )
@@ -33,7 +32,7 @@ func main() {
 
     updates, _ := telegramBot.GetUpdatesChan(updateConfig)
 
-    players := map[string]*internal.Connection{}
+    players := map[string]*services.Connection{}
     messenger := &services.Messenger{
         TelegramBot:    telegramBot,
         ConnectionPool: players,
@@ -54,7 +53,7 @@ func main() {
 
         var message tgbotapi.MessageConfig
         if currentUser == nil {
-            currentUser = &internal.Connection{
+            currentUser = &services.Connection{
                 ChatId: update.Message.Chat.ID,
                 User: entities.User{
                     UserName: update.Message.From.UserName,
@@ -93,7 +92,7 @@ func main() {
     }
 }
 
-func getPlayersNames(players map[string]*internal.Connection) []string {
+func getPlayersNames(players map[string]*services.Connection) []string {
     var playerNames []string
 
     for _, player := range players {

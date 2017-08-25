@@ -2,13 +2,11 @@ package services
 
 import (
     "gopkg.in/telegram-bot-api.v4"
-
-    "github.com/Vehsamrak/telegramud/internal"
 )
 
 type Messenger struct {
     TelegramBot    *tgbotapi.BotAPI
-    ConnectionPool map[string]*internal.Connection
+    ConnectionPool map[string]*Connection
 }
 
 func (sender *Messenger) SendMessage(chatId int64, message string) {

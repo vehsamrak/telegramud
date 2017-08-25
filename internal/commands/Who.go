@@ -3,11 +3,11 @@ package commands
 import (
     "strings"
 
-    "github.com/Vehsamrak/telegramud/internal"
+    "github.com/Vehsamrak/telegramud/internal/services"
 )
 
 type Who struct {
-    ConnectionPool map[string]*internal.Connection
+    ConnectionPool map[string]*services.Connection
 }
 
 func (command *Who) GetNames() []string {

@@ -4,13 +4,12 @@ import (
     "fmt"
 
     "github.com/Vehsamrak/telegramud/internal/services"
-    "github.com/Vehsamrak/telegramud/internal"
 )
 
 type Chat struct {
     Messenger      *services.Messenger
-    Sender         internal.Connection
-    ConnectionPool map[string]*internal.Connection
+    Sender         services.Connection
+    ConnectionPool map[string]*services.Connection
     Message        string
 }
 

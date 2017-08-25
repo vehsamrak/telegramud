@@ -1,16 +1,18 @@
 package commands
 
-import "github.com/Vehsamrak/telegramud/internal"
+import (
+	"github.com/Vehsamrak/telegramud/internal/services"
+)
 
 type AbstractCommander struct {
-	connection     *internal.Connection
-	connectionPool map[string]*internal.Connection
+	connection     *services.Connection
+	connectionPool map[string]*services.Connection
 }
 
-func (commander *AbstractCommander) SetConnection(connection *internal.Connection) {
+func (commander *AbstractCommander) SetConnection(connection *services.Connection) {
 	commander.connection = connection
 }
 
-func (commander *AbstractCommander) SetConnectionPool(connectionPool map[string]*internal.Connection) {
+func (commander *AbstractCommander) SetConnectionPool(connectionPool map[string]*services.Connection) {
 	commander.connectionPool = connectionPool
 }
