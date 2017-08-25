@@ -44,7 +44,8 @@ func main() {
         }
 
         commandName, commandParameters := parseCommand(update)
-        currentUser := players[update.Message.From.UserName]
+        username := update.Message.From.UserName
+        currentConnection := players[username]
         executorFactory := commands.ExecutorFactory{
             ConnectionPool: players,
             Messenger:      messenger,
@@ -52,18 +53,19 @@ func main() {
         }
 
         var message tgbotapi.MessageConfig
-        if currentUser == nil {
-            currentUser = &services.Connection{
+        if currentConnection == nil {
+            user := entities.User{UserName: username}
+            user = *user.FindByName(database.GetConnection(), username)
+
+            currentConnection = &services.Connection{
                 ChatId: update.Message.Chat.ID,
-                User: entities.User{
-                    UserName: update.Message.From.UserName,
-                },
+                User:   user,
             }
 
-            executor := executorFactory.Create(commands.EXECUTOR_LOGIN, currentUser)
-            currentUser.SetExecutor(executor)
+            executor := executorFactory.Create(commands.EXECUTOR_LOGIN, currentConnection)
+            currentConnection.SetExecutor(executor)
 
-            players[update.Message.From.UserName] = currentUser
+            players[username] = currentConnection
 
             messenger.SendMessage(
                 update.Message.Chat.ID,
@@ -73,7 +75,7 @@ func main() {
                 ),
             )
         } else {
-            commandResult := currentUser.GetExecutor().ExecuteCommand(commandName, commandParameters)
+            commandResult := currentConnection.GetExecutor().ExecuteCommand(commandName, commandParameters)
             message = commandResult.Message
             executorName := commandResult.ExecutorName
 
@@ -82,8 +84,8 @@ func main() {
             }
 
             if executorName != "" {
-                executor := executorFactory.Create(executorName, currentUser)
-                currentUser.SetExecutor(executor)
+                executor := executorFactory.Create(executorName, currentConnection)
+                currentConnection.SetExecutor(executor)
             }
 
             message.ParseMode = "markdown"
