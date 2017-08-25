@@ -5,7 +5,7 @@ import (
     "github.com/stretchr/testify/assert"
     "github.com/stretchr/testify/suite"
     "github.com/Vehsamrak/telegramud/internal/commands"
-    "github.com/Vehsamrak/telegramud/internal"
+    "github.com/Vehsamrak/telegramud/internal/services"
 )
 
 func TestHelp(test *testing.T) {
@@ -20,7 +20,7 @@ func (suite *HelpTest) SetupTest() {}
 
 func (suite *HelpTest) TestGetNames_emptyParameters_stringReturned() {
     gameCommander := commands.GameCommander{}
-    gameCommander.SetConnection(new(internal.Connection))
+    gameCommander.SetConnection(new(services.Connection))
     command := commands.Help{Commander: &gameCommander}
 
     commandResult := command.Execute()
