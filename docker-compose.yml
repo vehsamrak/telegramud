@@ -1,11 +1,20 @@
 version: '2'
 
 services:
+  application:
+    container_name: telegramud_application
+    build: .
+    image: telegramud:1.0
+    environment:
+      - TELEGRAM_APPLICATION_MUD_TOKEN
+    command: /go/src/github.com/Vehsamrak/telegramud/build/telegramud
+
   database:
     container_name: telegramud_database
     image: postgres:9.6
-#    volumes:
-#      - database-data:/var/lib/postgresql/data
+    volumes:
+      - database-data:/var/lib/postgresql/data
+      - ./infrastructure/sql:/docker-entrypoint-initdb.d
     ports:
       - "5433:5432"
 
