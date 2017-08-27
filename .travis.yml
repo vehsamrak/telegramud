@@ -15,7 +15,7 @@ install:
   - docker-compose --version
 
 script:
-  - docker-compose up -d
+  - docker-compose run --no-deps application go test -v ./tests/...
 
 after_success:
     # SSH key prepare
@@ -29,5 +29,5 @@ after_success:
     - echo "  User ${DEPLOY_SSH_USER}" >> ~/.ssh/config
     - echo "  IdentityFile ~/.ssh/deploy.key" >> ~/.ssh/config
 
-    # Deploy with scp
+    # Deploy docker compose
     - DOCKER_HOST=${DEPLOY_SSH_HOST}:2375 docker-compose up -d --build

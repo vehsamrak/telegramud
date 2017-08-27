@@ -9,7 +9,7 @@ services:
       - ./build:/go/src/github.com/Vehsamrak/telegramud/build
     environment:
       - TELEGRAM_APPLICATION_MUD_TOKEN
-    command: sh -c 'go build -o build/telegramud && build/telegramud'
+    command: go run game.go
 
   database:
     container_name: telegramud_database
