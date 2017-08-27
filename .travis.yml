@@ -1,5 +1,3 @@
-language: ruby
-
 env:
   DOCKER_COMPOSE_VERSION: 1.8.0
 
@@ -17,5 +15,5 @@ script:
   - docker-compose run --no-deps application go test -v ./tests/...
 
 deploy:
-    # Deploy docker compose
-    - DOCKER_HOST=${DEPLOY_SSH_HOST}:${DEPLOY_DOCKER_PORT} docker-compose up -d --build
+  # Deploy docker compose
+  - DOCKER_HOST=${DEPLOY_SSH_HOST}:${DEPLOY_DOCKER_PORT} docker-compose up -d --build
