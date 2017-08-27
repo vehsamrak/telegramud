@@ -26,7 +26,10 @@ before_script:
   - echo "  IdentityFile ~/.ssh/deploy.key" >> ~/.ssh/config
 
 script:
+  # Running tests
   - docker-compose run --no-deps application go test -v ./tests/...
 
-  # Deploy with docker compose
-  - DOCKER_HOST=${DEPLOY_SSH_HOST}:${DEPLOY_DOCKER_PORT} docker-compose up -d --build
+  # Deploy with docker compose only for branch master
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    DOCKER_HOST=${DEPLOY_SSH_HOST}:${DEPLOY_DOCKER_PORT} docker-compose up -d --build
+    fi
