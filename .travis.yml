@@ -1,16 +1,10 @@
 language: go
-
-go:
-  - 1.8.x
-  - 1.9.x
-  - master
-
-go_import_path: github.com/Vehsamrak/telegramud
+go: master
 
 env:
   DOCKER_COMPOSE_VERSION: 1.8.0
 
-before_install:
+install:
   - sudo apt-get update
   - sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-ce
   - docker-compose --version
@@ -19,12 +13,6 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
   - docker-compose --version
-  - docker-compose up -d
-  - cd infrastructure && ./init.sh && cd ..
-
-install:
-  - go get ./internal/...
-  - go get github.com/stretchr/testify
 
 script:
-  - go test -v ./tests/...
+  - docker-compose up -d
