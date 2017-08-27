@@ -29,4 +29,4 @@ script:
   - docker-compose run --no-deps application go test -v ./tests/...
 
   # Deploy with docker compose
-  - DOCKER_HOST=${DEPLOY_SSH_HOST}:2375 docker-compose up -d --build
+  - DOCKER_HOST=${DEPLOY_SSH_HOST}:${DEPLOY_DOCKER_PORT} docker-compose up -d --build
