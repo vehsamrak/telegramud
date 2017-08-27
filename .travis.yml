@@ -11,9 +11,7 @@ install:
   - sudo mv docker-compose /usr/local/bin
   - docker-compose --version
 
-script:
-  - docker-compose run --no-deps application go test -v ./tests/...
-
+before_script:
   # SSH key prepare
   - mv infrastructure/deploy.key.gpg .
   - gpg --yes --batch --passphrase=${DEPLOY_KEY_PASSWORD} deploy.key.gpg
@@ -25,5 +23,8 @@ script:
   - echo "  User ${DEPLOY_SSH_USER}" >> ~/.ssh/config
   - echo "  IdentityFile ~/.ssh/deploy.key" >> ~/.ssh/config
 
+script:
+  - docker-compose run --no-deps application go test -v ./tests/...
+
   # Deploy with docker compose
-  - DOCKER_HOST=${DEPLOY_SSH_HOST}:${DEPLOY_DOCKER_PORT} docker-compose up -d --build
+  - DOCKER_HOST=${DEPLOY_SSH_HOST}:2375 docker-compose up -d --build
