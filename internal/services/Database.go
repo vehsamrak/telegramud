@@ -13,7 +13,7 @@ func (database *Database) GetConnection() *gorm.DB {
 
     database.connection, _ = gorm.Open(
         "postgres",
-        "host=localhost port=5432 user=telegramud password=telegramud dbname=telegramud sslmode=disable",
+        "host=telegramud_database port=5432 user=telegramud password=telegramud dbname=telegramud sslmode=disable",
     )
 
     return database.connection
