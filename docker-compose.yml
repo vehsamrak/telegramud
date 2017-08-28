@@ -7,7 +7,7 @@ services:
     image: telegramud-application:1.0
     environment:
       - TELEGRAM_APPLICATION_MUD_TOKEN
-    command: env
+    command: go run game.go
 
   database:
     container_name: telegramud_database
