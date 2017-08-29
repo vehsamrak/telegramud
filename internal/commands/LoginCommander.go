@@ -47,7 +47,7 @@ func (commander *LoginCommander) ExecuteCommand(command string, commandParameter
 
             result = commander.Choice.GetQuestionMessage()
         case "enterGame":
-            result = "Ты осмотрелся.\n" + Look{}.Execute()
+            result = "Ты осмотрелся.\n\n" + Look{User: commander.connection.User}.Execute()
             executorName = "game"
         }
     }

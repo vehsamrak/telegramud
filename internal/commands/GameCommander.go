@@ -53,7 +53,9 @@ func (commander *GameCommander) findCommand(requestedCommandName string, command
 func (commander *GameCommander) createAllCommands(commandParameters []string) []Command {
     return []Command{
         Test{},
-        Look{},
+        &Look{
+            User: commander.connection.User,
+        },
         &Who{
             ConnectionPool: commander.connectionPool,
         },

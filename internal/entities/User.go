@@ -8,6 +8,7 @@ import (
 type User struct {
     UserName string `gorm:"primary_key;column:name"`
     Race     string `gorm:"column:race"`
+    Room     *Room
 }
 
 func (user *User) Save(database *gorm.DB) {

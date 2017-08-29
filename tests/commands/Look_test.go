@@ -5,6 +5,7 @@ import (
     "github.com/stretchr/testify/assert"
     "github.com/Vehsamrak/telegramud/internal/commands"
     "github.com/stretchr/testify/suite"
+    "github.com/Vehsamrak/telegramud/internal/entities"
 )
 
 func TestLook(test *testing.T) {
@@ -18,9 +19,16 @@ type LookTest struct {
 func (suite *LookTest) SetupTest() {}
 
 func (suite *LookTest) TestGetNames_emptyParameters_stringReturned() {
-    command := commands.Look{}
+    command := commands.Look{
+        User: &entities.User{
+            Room: &entities.Room{
+                Name: "Test room name",
+                Description: "Test room description",
+            },
+        },
+    }
 
     commandResult := command.Execute()
 
-    assert.Equal(suite.T(), commandResult, "Ты видишь контуры этого мира.")
+    assert.Equal(suite.T(), commandResult, "*Test room name*\nTest room description\n")
 }

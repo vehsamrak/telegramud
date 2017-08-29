@@ -14,6 +14,7 @@ import (
 
 var (
     database = &services.Database{}
+    worldRooms = (&services.RoomGenerator{}).GenerateWorld()
 )
 
 func main() {
@@ -56,10 +57,11 @@ func main() {
         if currentConnection == nil {
             user := entities.User{UserName: username}
             user = *user.FindByName(database.GetConnection(), username)
+            user.Room = worldRooms[0]
 
             currentConnection = &services.Connection{
                 ChatId: update.Message.Chat.ID,
-                User:   user,
+                User:   &user,
             }
 
             executor := executorFactory.Create(commands.EXECUTOR_LOGIN, currentConnection)
@@ -69,7 +71,7 @@ func main() {
 
             messenger.SendMessage(
                 update.Message.Chat.ID,
-                "Добро пожаловать на *Экспериментальный Полигон*!\nИгроки онлайн: "+ strings.Join(
+                "Добро пожаловать на *Экспериментальный Полигон*!\nИгроки онлайн: " + strings.Join(
                     getPlayersNames(players),
                     ", ",
                 ),
