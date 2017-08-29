@@ -5,8 +5,6 @@ services:
     container_name: telegramud_application
     build: .
     image: telegramud-application:1.0
-    volumes:
-      - .:/go/src/github.com/Vehsamrak/telegramud
     environment:
       - TELEGRAM_APPLICATION_MUD_TOKEN
     command: go run game.go
