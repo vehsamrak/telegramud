@@ -22,7 +22,7 @@ func main() {
         log.Panic(fault)
     }
 
-    log.Printf("Authorized on account %s", telegramBot.Self.UserName)
+    log.Printf("Authorized on account @%s", telegramBot.Self.UserName)
 
     databaseConnection := database.GetConnection()
     defer databaseConnection.Close()
