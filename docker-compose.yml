@@ -3,7 +3,9 @@ version: '2'
 services:
   application:
     container_name: telegramud_application
-    build: .
+    build:
+      context: .
+      dockerfile: ./infrastructure/Dockerfile
     image: telegramud-application:1.0
     environment:
       - TELEGRAM_APPLICATION_MUD_TOKEN
