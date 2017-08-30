@@ -26,8 +26,10 @@ before_script:
   - echo "  IdentityFile ~/.ssh/deploy.key" >> ~/.ssh/config
 
 script:
+  - ls
+
   # Running tests
   - docker-compose run --no-deps application go test -v ./tests/...
 
   # Deploy with docker compose only for branch master
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then DOCKER_HOST=${DEPLOY_SSH_HOST} DOCKER_TLS_VERIFY=1 docker-compose up -d --build; else echo "skipped"; fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then DOCKER_HOST=${DEPLOY_SSH_HOST} DOCKER_TLS_VERIFY=1 DOCKER_CERT_PATH=~/.docker docker-compose up -d --build; else echo "skipped"; fi
