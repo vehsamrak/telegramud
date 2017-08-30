@@ -27,6 +27,7 @@ before_script:
 
 script:
   - ls
+  - pwd
 
   # Running tests
   - docker-compose run --no-deps application go test -v ./tests/...
