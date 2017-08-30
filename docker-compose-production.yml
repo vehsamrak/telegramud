@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  application:
+    container_name: telegramud_application
+    image: rottenwood/telegramud-application:production
+    environment:
+      - TELEGRAM_APPLICATION_MUD_TOKEN
+    command: go run game.go
+
+  database:
+    container_name: telegramud_database
+    image: rottenwood/telegramud-database:production
+    ports:
+      - "5433:5432"
+
+volumes:
+  database-data:
