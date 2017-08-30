@@ -41,4 +41,4 @@ script:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose up -d --build; else echo "skipped"; fi
 
   # Clearing unused images
-  - docker image prune -f
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker image prune -f; else echo "skipped"; fi
