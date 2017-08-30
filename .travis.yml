@@ -31,14 +31,12 @@ before_script:
   - tar -zxvf docker-ssl.tar.tgz
 
 script:
-  - env
-
   # Running tests
   - docker-compose run --no-deps application go test -v ./tests/...
 
   # Deploy with docker compose only for branch master
   - export DOCKER_HOST=${DEPLOY_SSH_HOST}
   - export DOCKER_TLS_VERIFY=1
-  - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/infrastructure/docker-ssl
+  - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/
   - ls ${DOCKER_CERT_PATH}
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose up -d --build; else echo "skipped"; fi
