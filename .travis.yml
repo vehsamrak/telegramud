@@ -31,4 +31,5 @@ script:
 
   # Deploy with docker compose only for branch master
   - export DOCKER_HOST=${DEPLOY_SSH_HOST}:${DEPLOY_DOCKER_PORT}
+  - export DOCKER_TLS_VERIFY=1
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose up -d --build; else echo "skipped"; fi
