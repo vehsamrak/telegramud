@@ -29,6 +29,15 @@ script:
   # Running tests
   - docker-compose run --no-deps application go test -v ./tests/...
 
+  # Login to docker hub
+  - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}
+
+  # Pushing images to docker hub
+  - docker tag telegramud-application:1.0 ${DOCKERHUB_USERNAME}/telegramud-application:production
+  - docker push ${DOCKERHUB_USERNAME}/telegramud-application:production
+  - docker tag telegramud-database:1.0 ${DOCKERHUB_USERNAME}/telegramud-database:production
+  - docker push ${DOCKERHUB_USERNAME}/telegramud-database:production
+
   # Deploy with docker compose only for branch master
   - export DOCKER_HOST=${DEPLOY_SSH_HOST}:${DEPLOY_DOCKER_PORT}
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose up -d --build; else echo "skipped"; fi
