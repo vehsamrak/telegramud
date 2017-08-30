@@ -25,12 +25,19 @@ before_script:
   - echo "  User ${DEPLOY_SSH_USER}" >> ~/.ssh/config
   - echo "  IdentityFile ~/.ssh/deploy.key" >> ~/.ssh/config
 
+  # Docker certificates prepare
+  - mv infrastructure/docker-ssl.tar.tgz.gpg .
+  - gpg --yes --batch --passphrase=${DEPLOY_KEY_PASSWORD} docker-ssl.tar.tgz.gpg
+  - tar -zxvf docker-ssl.tar.tgz
+
 script:
-  - ls
-  - pwd
+  - env
 
   # Running tests
   - docker-compose run --no-deps application go test -v ./tests/...
 
   # Deploy with docker compose only for branch master
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then DOCKER_HOST=${DEPLOY_SSH_HOST} DOCKER_TLS_VERIFY=1 DOCKER_CERT_PATH=~/.docker docker-compose up -d --build; else echo "skipped"; fi
+  - export DOCKER_HOST=${DEPLOY_SSH_HOST}
+  - export DOCKER_TLS_VERIFY=1
+  - export DOCKER_CERT_PATH=/home/travis/gopath/src/github.com/Vehsamrak/telegramud/infrastructure/docker-ssl
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose up -d --build; else echo "skipped"; fi
