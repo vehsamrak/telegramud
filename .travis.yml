@@ -39,3 +39,6 @@ script:
   - export DOCKER_TLS_VERIFY=1
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose up -d --build; else echo "skipped"; fi
+
+  # Clearing unused images
+  - docker image prune -f
