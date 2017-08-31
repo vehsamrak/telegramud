@@ -32,9 +32,6 @@ before_script:
   - tar -zxvf docker-ssl.tar.tgz
 
 script:
-  # Running migrations
-  - docker-compose run application go run -v game.go -migrate
-
   # Running tests
   - docker-compose run --no-deps application go test -v ./tests/...
 
@@ -43,6 +40,9 @@ script:
   - export DOCKER_TLS_VERIFY=1
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose up -d --build; else echo "skipped"; fi
+
+  # Running migrations
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose run application go run -v game.go -migrate; else echo "skipped"; fi
 
   # Clearing unused images
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker image prune -f; else echo "skipped"; fi
