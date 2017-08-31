@@ -107,6 +107,7 @@ func processMigrations() {
 
     if *processMigrations {
         migrations.Migrate()
+        os.Exit(0)
     }
 }
 
