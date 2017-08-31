@@ -6,10 +6,12 @@ import (
     "log"
     "os"
     "strings"
+    "flag"
 
     "github.com/Vehsamrak/telegramud/internal/commands"
     "github.com/Vehsamrak/telegramud/internal/services"
     "github.com/Vehsamrak/telegramud/internal/entities"
+    "github.com/Vehsamrak/telegramud/internal/migrations"
 )
 
 var (
@@ -18,6 +20,8 @@ var (
 )
 
 func main() {
+    processMigrations()
+
     telegramBot, fault := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_APPLICATION_MUD_TOKEN"))
     if fault != nil {
         log.Panic(fault)
@@ -93,6 +97,16 @@ func main() {
             message.ParseMode = "markdown"
             telegramBot.Send(message)
         }
+    }
+}
+
+// Run automatic migrations on database if flag -migrate passed
+func processMigrations() {
+    processMigrations := flag.Bool("migrate", false, "Process database migrations")
+    flag.Parse()
+
+    if *processMigrations {
+        migrations.Migrate()
     }
 }
 
