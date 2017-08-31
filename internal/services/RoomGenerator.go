@@ -15,6 +15,12 @@ func (generator *RoomGenerator) GenerateWorld(database *gorm.DB) []*entities.Roo
             Description: "Шумная городская таверна, где начинаются приключения.",
             Coordinates: &entities.Coordinates{X: 1, Y: 1, Z: 0},
         },
+        {
+            Id:          "marketplace",
+            Name:        "Рыночная площадь",
+            Description: "Площадь с шатрами и лавками торговцев.",
+            Coordinates: &entities.Coordinates{X: 1, Y: 2, Z: 0},
+        },
     }
 
     for _, room := range rooms {
