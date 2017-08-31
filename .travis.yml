@@ -25,7 +25,7 @@ before_script:
   - echo "  User ${DEPLOY_SSH_USER}" >> ~/.ssh/config
   - echo "  IdentityFile ~/.ssh/deploy.key" >> ~/.ssh/config
 
-  # Docker certificates prepare
+  # Docker TLS certificates prepare
   - mv infrastructure/docker-ssl.tar.tgz.gpg .
   - gpg --yes --batch --passphrase=${DEPLOY_KEY_PASSWORD} docker-ssl.tar.tgz.gpg
   - tar -zxvf docker-ssl.tar.tgz
