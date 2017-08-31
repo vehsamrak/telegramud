@@ -16,7 +16,7 @@ import (
 
 var (
     database = &services.Database{}
-    worldRooms = (&services.RoomGenerator{}).GenerateWorld()
+    worldRooms = (&services.RoomGenerator{}).GenerateWorld(database.GetConnection())
 )
 
 func main() {
