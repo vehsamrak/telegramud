@@ -32,6 +32,9 @@ before_script:
   - tar -zxvf docker-ssl.tar.tgz
 
 script:
+  # Running migrations
+  - docker-compose run application go run -v game.go -migrate
+
   # Running tests
   - docker-compose run --no-deps application go test -v ./tests/...
 
