@@ -8,7 +8,8 @@ import (
 type User struct {
     UserName string `gorm:"primary_key;column:name"`
     Race     string `gorm:"column:race"`
-    Room     *Room
+    RoomId   string `gorm:"column:room;type:varchar(100)"`
+    Room     *Room  `gorm:"ForeignKey:RoomId"`
 }
 
 func (user *User) Save(database *gorm.DB) {
