@@ -1,8 +1,6 @@
 package commands
 
-import (
-    "github.com/Vehsamrak/telegramud/internal/services"
-)
+import "github.com/Vehsamrak/telegramud/internal/services"
 
 const EXECUTOR_LOGIN string = "login"
 const EXECUTOR_GAME string = "game"
