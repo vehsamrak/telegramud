@@ -6,12 +6,12 @@ import (
 )
 
 type Room struct {
-    Id string `gorm:"primary_key;column:id;type:varchar(100)"`
-    Name string `gorm:"column:name;type:varchar(100)"`
-    Description string `gorm:"column:description"`
+    Id                string `gorm:"primary_key;column:id;type:varchar(100)"`
+    Name              string `gorm:"column:name;type:varchar(100)"`
+    Description       string `gorm:"column:description"`
     CoordinatesString string `gorm:"column:coordinates;unique_index"`
-    Coordinates *Coordinates
-    Exits []*RoomPassage
+    Coordinates       *Coordinates
+    Passages          []*RoomPassage
 }
 
 func (room *Room) Save(database *gorm.DB) {
