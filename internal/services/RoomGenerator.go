@@ -31,8 +31,9 @@ func (generator *RoomGenerator) GenerateWorld(database *gorm.DB) []*entities.Roo
     }
 
     market.Passages = append(market.Passages, &entities.RoomPassage{RoomTo: tavern})
+    market.Passages = append(market.Passages, &entities.RoomPassage{RoomTo: street})
     tavern.Passages = append(tavern.Passages, &entities.RoomPassage{RoomTo: market})
-    tavern.Passages = append(tavern.Passages, &entities.RoomPassage{RoomTo: street})
+    street.Passages = append(street.Passages, &entities.RoomPassage{RoomTo: market})
 
     rooms := []*entities.Room{
         tavern,
