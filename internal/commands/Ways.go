@@ -2,6 +2,8 @@ package commands
 
 import (
     "github.com/Vehsamrak/telegramud/internal/entities"
+    "fmt"
+    "strings"
 )
 
 type Ways struct {
@@ -18,6 +20,12 @@ func (command Ways) Execute() string {
     var commandResult string
 
     if currentRoomPassages != nil {
+        var roomNames []string
+        for _, currentRoomPassage := range currentRoomPassages{
+            roomNames = append(roomNames, currentRoomPassage.RoomTo.Name)
+        }
+
+        commandResult = fmt.Sprintln("Доступные пути:", strings.Join(roomNames, ", "))
     } else {
         commandResult = "Отсюда нет видимых выходов."
     }
