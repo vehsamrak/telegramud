@@ -31,10 +31,9 @@ before_script:
   - gpg --yes --batch --passphrase=${DEPLOY_KEY_PASSWORD} docker-ssl.tar.tgz.gpg
   - tar -zxvf docker-ssl.tar.tgz
 
-script:
   # Running tests
   - docker-compose run --no-deps application go test -v ./tests/...
-
+script:
   # Deploy with docker compose only for branch master
   - export DOCKER_HOST=${DEPLOY_SSH_HOST}:${DEPLOY_DOCKER_PORT}
   - export DOCKER_TLS_VERIFY=1
