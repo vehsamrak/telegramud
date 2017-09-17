@@ -6,3 +6,4 @@
 ### Development environment
 * Set environment variable `TELEGRAM_APPLICATION_MUD_TOKEN` to Telegram bot token.
 * Use `docker-compose -f docker-compose.yml -f docker-compose-local.yml up -d` to start local environment
+* Use `docker restart telegramud_application` to rebuild application
