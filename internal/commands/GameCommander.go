@@ -70,7 +70,8 @@ func (commander *GameCommander) createAllCommands(commandParameters []string) []
             Parameters: commandParameters,
         },
         &Go{
-            User: commander.connection.User,
+            User:              commander.connection.User,
+            CommandParameters: commandParameters,
         },
         &Ways{
             User: commander.connection.User,

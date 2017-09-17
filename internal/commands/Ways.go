@@ -1,9 +1,10 @@
 package commands
 
 import (
-    "github.com/Vehsamrak/telegramud/internal/entities"
     "fmt"
     "strings"
+
+    "github.com/Vehsamrak/telegramud/internal/entities"
 )
 
 type Ways struct {

@@ -1,8 +1,9 @@
 package services
 
 import (
-    "github.com/Vehsamrak/telegramud/internal/entities"
     "github.com/jinzhu/gorm"
+
+    "github.com/Vehsamrak/telegramud/internal/entities"
 )
 
 type RoomGenerator struct{}

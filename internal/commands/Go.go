@@ -1,26 +1,51 @@
 package commands
 
 import (
+    "strings"
+
     "github.com/Vehsamrak/telegramud/internal/entities"
 )
 
 type Go struct {
-    User *entities.User
+    User              *entities.User
+    CommandParameters []string
 }
 
 func (command Go) GetNames() []string {
-	return []string{"go", "идти", "перейти", "пройти", "пойти"}
+    return []string{"go", "идти", "перейти", "пройти", "пойти"}
 }
 
-func (command Go) Execute() string {
+func (command Go) Execute() (commandResult string) {
     currentRoomPassages := command.User.Room.Passages
 
-    var commandResult string
-
     if currentRoomPassages != nil {
-        commandResult = Look{command.User}.Execute()
+        var destinationRoomName string
+
+        if len(command.CommandParameters) > 0 {
+            destinationRoomName = command.CommandParameters[0]
+        } else {
+            commandResult = "Куда ты хочешь пойти?"
+            return
+        }
+
+        var roomNames []string
+        roomReached := false
+        for _, currentRoomPassage := range currentRoomPassages {
+            roomNames = append(roomNames, currentRoomPassage.RoomTo.Name)
+            if strings.HasPrefix(strings.ToLower(currentRoomPassage.RoomTo.Name), strings.ToLower(destinationRoomName)) {
+                command.User.Room = currentRoomPassage.RoomTo
+                roomReached = true
+                break
+            }
+        }
+
+        if roomReached {
+            commandResult = "Ты дошел до места назначения.\n\n" + Look{User: command.User}.Execute()
+        } else {
+            commandResult = "Ты не можешь пойти туда."
+        }
     } else {
-        commandResult = "Ты не можешь пройти в том направлении."
+        commandResult = Ways{User: command.User}.Execute()
     }
 
     return commandResult
