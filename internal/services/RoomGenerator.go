@@ -13,21 +13,21 @@ func (generator *RoomGenerator) GenerateWorld(database *gorm.DB) []*entities.Roo
         Id:          "market",
         Name:        "Рыночная площадь",
         Description: "Площадь с шатрами и лавками торговцев.",
-        Coordinates: &entities.Coordinates{X: 1, Y: 2, Z: 0},
+        Coordinates: &entities.Coordinates{X: 1, Y: 2},
     }
 
     tavern := &entities.Room{
         Id:          "tavern",
         Name:        "Таверна",
         Description: "Шумная городская таверна, где начинаются приключения.",
-        Coordinates: &entities.Coordinates{X: 1, Y: 1, Z: 0},
+        Coordinates: &entities.Coordinates{X: 1, Y: 1},
     }
 
     street := &entities.Room{
         Id:          "street",
         Name:        "Улица",
         Description: "Шумная городская улица.",
-        Coordinates: &entities.Coordinates{X: 1, Y: 3, Z: 0},
+        Coordinates: &entities.Coordinates{X: 1, Y: 3},
     }
 
     market.Passages = append(market.Passages, &entities.RoomPassage{RoomTo: tavern})
