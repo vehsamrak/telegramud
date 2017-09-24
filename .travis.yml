@@ -40,7 +40,7 @@ script:
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
 
   # Stopping old application
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker exec -it telegramud_application pkill game; else echo "skipped"; fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose run application pkill game; else echo "skipped"; fi
 
   # Starting new application
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose up -d --build; else echo "skipped"; fi
