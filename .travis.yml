@@ -52,5 +52,6 @@ script:
   # Running migrations
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose run application go run -v game.go -migrate; else echo "skipped"; fi
 
-  # Clearing unused images
+  # Clearing unused images and containers
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker --tlsverify -H=${DOCKER_HOST} --tlscacert=${DOCKER_CERT_PATH}/ca.pem --tlscert=${DOCKER_CERT_PATH}/cert.pem --tlskey=${DOCKER_CERT_PATH}/key.pem image prune -f; else echo "skipped"; fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker --tlsverify -H=${DOCKER_HOST} --tlscacert=${DOCKER_CERT_PATH}/ca.pem --tlscert=${DOCKER_CERT_PATH}/cert.pem --tlskey=${DOCKER_CERT_PATH}/key.pem container prune -f; else echo "skipped"; fi
