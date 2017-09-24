@@ -42,6 +42,7 @@ script:
   # Stopping old application
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker --tlsverify -H=${DOCKER_HOST} --tlscacert=${DOCKER_CERT_PATH}/ca.pem --tlscert=${DOCKER_CERT_PATH}/cert.pem --tlskey=${DOCKER_CERT_PATH}/key.pem ps -a; else echo "skipped"; fi
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker --tlsverify -H=${DOCKER_HOST} --tlscacert=${DOCKER_CERT_PATH}/ca.pem --tlscert=${DOCKER_CERT_PATH}/cert.pem --tlskey=${DOCKER_CERT_PATH}/key.pem exec telegramud_application pkill game; else echo "skipped"; fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker --tlsverify -H=${DOCKER_HOST} --tlscacert=${DOCKER_CERT_PATH}/ca.pem --tlscert=${DOCKER_CERT_PATH}/cert.pem --tlskey=${DOCKER_CERT_PATH}/key.pem logs telegramud_application; else echo "skipped"; fi
 
   - sleep 5
 
