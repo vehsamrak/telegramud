@@ -3,8 +3,8 @@ package commands
 import (
     "gopkg.in/telegram-bot-api.v4"
 
-    "github.com/Vehsamrak/telegramud/internal"
-    "github.com/Vehsamrak/telegramud/internal/services"
+    "github.com/vehsamrak/telegramud/internal"
+    "github.com/vehsamrak/telegramud/internal/services"
 )
 
 type LoginCommander struct {
@@ -35,18 +35,6 @@ func (commander *LoginCommander) ExecuteCommand(command string, commandParameter
     if result == "" {
         switch commander.Stage {
         case "":
-            commander.Choice = ChoiceControl{
-                Question:         "Выбери свой класс",
-                AvailableAnswers: []string{"воин", "лучник", "маг"},
-                AfterStage:       "enterGame",
-                ResultFunction: func(answer string) {
-                    commander.connection.User.Race = commander.Choice.Answer
-                    commander.connection.User.Save(commander.Database.GetConnection())
-                },
-            }
-
-            result = commander.Choice.GetQuestionMessage()
-        case "enterGame":
             result = "Ты осмотрелся.\n\n" + Look{User: commander.connection.User}.Execute()
             executorName = "game"
         }
