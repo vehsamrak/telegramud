@@ -7,20 +7,26 @@ import (
     "os"
     "strings"
     "flag"
+    "github.com/vehsamrak/osinterrupt"
 
-    "github.com/Vehsamrak/telegramud/internal/commands"
-    "github.com/Vehsamrak/telegramud/internal/services"
-    "github.com/Vehsamrak/telegramud/internal/entities"
-    "github.com/Vehsamrak/telegramud/internal/migrations"
+    "github.com/vehsamrak/telegramud/internal/commands"
+    "github.com/vehsamrak/telegramud/internal/services"
+    "github.com/vehsamrak/telegramud/internal/entities"
+    "github.com/vehsamrak/telegramud/internal/migrations"
 )
 
 var (
-    database = &services.Database{}
-    worldRooms = (&services.RoomGenerator{}).GenerateWorld(database.GetConnection())
+    database   = &services.Database{}
+    worldSaver = &services.WorldSaver{Database: database}
+    worldRooms = (&services.RoomGenerator{}).CreateWorld(database.GetConnection())
 )
 
 func main() {
     processMigrations()
+
+    osinterrupt.HandleTerminateSignal(func() {
+        worldSaver.Save()
+    })
 
     telegramBot, fault := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_APPLICATION_MUD_TOKEN"))
     if fault != nil {
@@ -30,6 +36,7 @@ func main() {
     log.Printf("Authorized on account @%s", telegramBot.Self.UserName)
 
     databaseConnection := database.GetConnection()
+    defer worldSaver.Save()
     defer databaseConnection.Close()
 
     updateConfig := tgbotapi.NewUpdate(0)
