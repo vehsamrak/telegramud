@@ -5,8 +5,8 @@ import (
     "gopkg.in/telegram-bot-api.v4"
     "strings"
 
-    "github.com/Vehsamrak/telegramud/internal/services"
-    "github.com/Vehsamrak/telegramud/internal"
+    "github.com/vehsamrak/telegramud/internal/services"
+    "github.com/vehsamrak/telegramud/internal"
 )
 
 type GameCommander struct {

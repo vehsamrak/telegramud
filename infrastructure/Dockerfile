@@ -1,6 +1,6 @@
 FROM golang:1.8-alpine
 
-WORKDIR /go/src/github.com/Vehsamrak/telegramud
+WORKDIR /go/src/github.com/vehsamrak/telegramud
 COPY . .
 
 RUN apk add --no-cache git

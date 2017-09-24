@@ -4,8 +4,8 @@ import (
     "testing"
     "github.com/stretchr/testify/assert"
     "github.com/stretchr/testify/suite"
-    "github.com/Vehsamrak/telegramud/internal/commands"
-    "github.com/Vehsamrak/telegramud/internal/services"
+    "github.com/vehsamrak/telegramud/internal/commands"
+    "github.com/vehsamrak/telegramud/internal/services"
 )
 
 func TestHelp(test *testing.T) {

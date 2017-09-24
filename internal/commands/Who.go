@@ -3,7 +3,7 @@ package commands
 import (
     "strings"
 
-    "github.com/Vehsamrak/telegramud/internal/services"
+    "github.com/vehsamrak/telegramud/internal/services"
 )
 
 type Who struct {

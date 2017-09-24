@@ -3,4 +3,4 @@ version: '2'
 services:
   application:
     volumes:
-      - .:/go/src/github.com/Vehsamrak/telegramud
+      - .:/go/src/github.com/vehsamrak/telegramud

@@ -3,12 +3,12 @@ package services
 import (
     "github.com/jinzhu/gorm"
 
-    "github.com/Vehsamrak/telegramud/internal/entities"
+    "github.com/vehsamrak/telegramud/internal/entities"
 )
 
 type RoomGenerator struct{}
 
-func (generator *RoomGenerator) GenerateWorld(database *gorm.DB) []*entities.Room {
+func (generator *RoomGenerator) CreateWorld(database *gorm.DB) []*entities.Room {
     market := &entities.Room{
         Id:          "market",
         Name:        "Рыночная площадь",

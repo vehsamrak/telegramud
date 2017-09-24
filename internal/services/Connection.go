@@ -1,6 +1,6 @@
 package services
 
-import "github.com/Vehsamrak/telegramud/internal/entities"
+import "github.com/vehsamrak/telegramud/internal/entities"
 
 type Connection struct {
     executor Executor

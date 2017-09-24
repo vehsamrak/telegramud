@@ -4,7 +4,7 @@ import (
     "fmt"
     "strings"
 
-    "github.com/Vehsamrak/telegramud/internal/entities"
+    "github.com/vehsamrak/telegramud/internal/entities"
 )
 
 type Ways struct {

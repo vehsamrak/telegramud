@@ -3,7 +3,7 @@ package commands
 import (
     "fmt"
 
-    "github.com/Vehsamrak/telegramud/internal/services"
+    "github.com/vehsamrak/telegramud/internal/services"
 )
 
 type Chat struct {

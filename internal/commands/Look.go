@@ -3,7 +3,7 @@ package commands
 import (
     "fmt"
 
-    "github.com/Vehsamrak/telegramud/internal/entities"
+    "github.com/vehsamrak/telegramud/internal/entities"
 )
 
 type Look struct {

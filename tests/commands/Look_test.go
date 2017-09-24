@@ -3,9 +3,9 @@ package tests
 import (
     "testing"
     "github.com/stretchr/testify/assert"
-    "github.com/Vehsamrak/telegramud/internal/commands"
+    "github.com/vehsamrak/telegramud/internal/commands"
     "github.com/stretchr/testify/suite"
-    "github.com/Vehsamrak/telegramud/internal/entities"
+    "github.com/vehsamrak/telegramud/internal/entities"
 )
 
 func TestLook(test *testing.T) {
