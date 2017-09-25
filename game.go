@@ -26,7 +26,8 @@ func main() {
     worldSaver.Init()
 
     osinterrupt.HandleTerminateSignal(func() {
-        worldSaver.Save()
+        worldSaver.SaveWorld()
+        worldSaver.Destruct()
     })
 
     telegramBot, fault := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_APPLICATION_MUD_TOKEN"))
@@ -37,7 +38,7 @@ func main() {
     log.Printf("Authorized on account @%s", telegramBot.Self.UserName)
 
     databaseConnection := database.GetConnection()
-    defer worldSaver.Save()
+    defer worldSaver.SaveWorld()
     defer databaseConnection.Close()
 
     updateConfig := tgbotapi.NewUpdate(0)
