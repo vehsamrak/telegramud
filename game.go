@@ -23,6 +23,7 @@ var (
 
 func main() {
     processMigrations()
+    worldSaver.Init()
 
     osinterrupt.HandleTerminateSignal(func() {
         worldSaver.Save()
@@ -44,10 +45,9 @@ func main() {
 
     updates, _ := telegramBot.GetUpdatesChan(updateConfig)
 
-    players := map[string]*services.Connection{}
     messenger := &services.Messenger{
         TelegramBot:    telegramBot,
-        ConnectionPool: players,
+        ConnectionPool: worldSaver.Players,
     }
 
     for update := range updates {
@@ -57,9 +57,9 @@ func main() {
 
         commandName, commandParameters := parseCommand(update)
         username := update.Message.From.UserName
-        currentConnection := players[username]
+        currentConnection := worldSaver.Players[username]
         executorFactory := commands.ExecutorFactory{
-            ConnectionPool: players,
+            ConnectionPool: worldSaver.Players,
             Messenger:      messenger,
             Database:       database,
         }
@@ -78,12 +78,12 @@ func main() {
             executor := executorFactory.Create(commands.EXECUTOR_LOGIN, currentConnection)
             currentConnection.SetExecutor(executor)
 
-            players[username] = currentConnection
+            worldSaver.Players[username] = currentConnection
 
             messenger.SendMessage(
                 update.Message.Chat.ID,
                 "Добро пожаловать на *Экспериментальный Полигон*!\nИгроки онлайн: " + strings.Join(
-                    getPlayersNames(players),
+                    getPlayersNames(worldSaver.Players),
                     ", ",
                 ),
             )
