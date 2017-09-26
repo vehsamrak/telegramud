@@ -1,6 +1,10 @@
 package services
 
-import "fmt"
+import (
+    "fmt"
+
+    "github.com/vehsamrak/telegramud/internal/entities"
+)
 
 type WorldSaver struct {
     Database *Database
@@ -20,6 +24,15 @@ func (world *WorldSaver) SaveWorld() {
 // Initialise world saver
 func (world *WorldSaver) Init() {
     world.Players = map[string]*Connection{}
+    userService := &entities.User{}
+    allUsers := userService.FindAll(world.Database.GetConnection())
+
+    for _, user := range allUsers {
+        world.Players[user.UserName] = &Connection{
+            User:   &user,
+        }
+    }
+
 }
 
 // Destruct world

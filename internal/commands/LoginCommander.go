@@ -14,6 +14,10 @@ type LoginCommander struct {
     Database *services.Database
 }
 
+func (commander *LoginCommander) GetName() string {
+    return services.EXECUTOR_LOGIN
+}
+
 func (commander *LoginCommander) ExecuteCommand(command string, commandParameters []string) (
     commandResult internal.CommandResult,
 ) {
@@ -42,7 +46,7 @@ func (commander *LoginCommander) ExecuteCommand(command string, commandParameter
 
     commandResult = internal.CommandResult{
         Message: tgbotapi.NewMessage(
-            commander.connection.ChatId,
+            commander.connection.User.ChatId,
             result,
         ),
     }

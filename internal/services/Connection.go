@@ -4,7 +4,6 @@ import "github.com/vehsamrak/telegramud/internal/entities"
 
 type Connection struct {
     executor Executor
-    ChatId   int64
     User     *entities.User
 }
 
@@ -14,4 +13,5 @@ func (connection *Connection) GetExecutor() Executor {
 
 func (connection *Connection) SetExecutor(executor Executor) {
     connection.executor = executor
+    connection.User.Executor = executor.GetName()
 }

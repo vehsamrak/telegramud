@@ -18,6 +18,6 @@ func (sender *Messenger) SendMessage(chatId int64, message string) {
 
 func (sender *Messenger) SendToAll(message string) {
     for _, connection := range sender.ConnectionPool {
-        sender.SendMessage(connection.ChatId, message)
+        sender.SendMessage(connection.User.ChatId, message)
     }
 }

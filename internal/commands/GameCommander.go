@@ -15,6 +15,10 @@ type GameCommander struct {
     Database  *services.Database
 }
 
+func (commander *GameCommander) GetName() string {
+    return services.EXECUTOR_GAME
+}
+
 func (commander *GameCommander) ExecuteCommand(commandName string, commandParameters []string) (
     commandResult internal.CommandResult,
 ) {
@@ -31,7 +35,7 @@ func (commander *GameCommander) ExecuteCommand(commandName string, commandParame
     if result == "" {
         commandResult.IsEmpty = true
     } else {
-        commandResult.Message = tgbotapi.NewMessage(commander.connection.ChatId, result)
+        commandResult.Message = tgbotapi.NewMessage(commander.connection.User.ChatId, result)
     }
 
     return commandResult

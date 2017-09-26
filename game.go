@@ -70,13 +70,12 @@ func main() {
             user := entities.User{UserName: username}
             user = *user.FindByName(database.GetConnection(), username)
             user.Room = worldRooms[0]
+            user.ChatId = update.Message.Chat.ID
 
-            currentConnection = &services.Connection{
-                ChatId: update.Message.Chat.ID,
-                User:   &user,
-            }
+            currentConnection = &services.Connection{User: &user}
 
-            executor := executorFactory.Create(commands.EXECUTOR_LOGIN, currentConnection)
+            executor := executorFactory.Create(services.EXECUTOR_LOGIN, currentConnection)
+            user.Executor = executor.GetName()
             currentConnection.SetExecutor(executor)
 
             worldSaver.Players[username] = currentConnection
@@ -89,19 +88,26 @@ func main() {
                 ),
             )
         } else {
-            commandResult := currentConnection.GetExecutor().ExecuteCommand(commandName, commandParameters)
-            message = commandResult.Message
-            executorName := commandResult.ExecutorName
+            currentExecutor := currentConnection.GetExecutor()
+
+            if currentExecutor == nil {
+                currentExecutor = executorFactory.Create(currentConnection.User.Executor, currentConnection)
+            }
+
+            commandResult := currentExecutor.ExecuteCommand(commandName, commandParameters)
 
             if commandResult.IsEmpty {
                 continue
             }
 
+            // if executor was changed by command result
+            executorName := commandResult.ExecutorName
             if executorName != "" {
                 executor := executorFactory.Create(executorName, currentConnection)
                 currentConnection.SetExecutor(executor)
             }
 
+            message = commandResult.Message
             message.ParseMode = "markdown"
             telegramBot.Send(message)
         }
