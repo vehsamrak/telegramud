@@ -5,10 +5,15 @@ case $1 in
     $0 start
 ;;
 
-'restart')
-    echo "Stopping and restarting application ..."
+'reload')
+    echo "Reloading application ..."
     docker exec -it telegramud_application pkill game
     docker restart telegramud_application
+;;
+
+'restart')
+    $0 stop
+    $0 start
 ;;
 
 'start')
