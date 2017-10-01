@@ -2,10 +2,10 @@ package migrations
 
 import (
     _ "github.com/jinzhu/gorm/dialects/postgres"
+    "fmt"
 
     "github.com/vehsamrak/telegramud/internal/services"
     "github.com/vehsamrak/telegramud/internal/entities"
-    "fmt"
 )
 
 func Migrate() {
