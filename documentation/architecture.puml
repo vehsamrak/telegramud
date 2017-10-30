@@ -1,0 +1,15 @@
+@startuml
+
+class ConnectionManager {
+}
+
+class Connection {
+}
+
+class Player {
+}
+
+abstract class GameCommand {
+}
+
+@enduml
