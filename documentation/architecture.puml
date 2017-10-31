@@ -6,6 +6,8 @@ class ConnectionManager {
 class Connection {
 }
 
+ConnectionManager -- Connection
+
 class Player {
 }
 
