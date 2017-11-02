@@ -9,7 +9,14 @@ class Connection {
 Connector -- Connection
 
 class Player {
+
 }
+
+class Race {
+
+}
+
+Player -- Race
 
 abstract class GameCommand {
 }
