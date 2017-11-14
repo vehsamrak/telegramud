@@ -1,0 +1,15 @@
+package: github.com/vehsamrak/telegramud
+import:
+- package: github.com/jinzhu/gorm
+  version: ^1.0.0
+  subpackages:
+  - dialects/postgres
+- package: github.com/vehsamrak/osinterrupt
+- package: gopkg.in/telegram-bot-api.v4
+  version: ^4.6.1
+testImport:
+- package: github.com/stretchr/testify
+  version: ^1.1.4
+  subpackages:
+  - assert
+  - suite
