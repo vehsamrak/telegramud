@@ -1,0 +1,35 @@
+hash: 2c1f70b746491a16d2e84abc9d4ddbd3727f8adfed7a2ff40e000bfc97553ffa
+updated: 2017-11-15T00:18:04.500879853+03:00
+imports:
+- name: github.com/jinzhu/gorm
+  version: 5174cc5c242a728b435ea2be8a2f7f998e15429b
+  subpackages:
+  - dialects/postgres
+- name: github.com/jinzhu/inflection
+  version: 1c35d901db3da928c72a72d8458480cc9ade058f
+- name: github.com/lib/pq
+  version: 8c6ee72f3e6bcb1542298dd5f76cb74af9742cec
+  subpackages:
+  - hstore
+  - oid
+- name: github.com/technoweenie/multipartstreamer
+  version: a90a01d73ae432e2611d178c18367fbaa13e0154
+- name: github.com/vehsamrak/osinterrupt
+  version: 3280bebc86867a016f9858fe7664b7a3a94f4cf5
+- name: gopkg.in/telegram-bot-api.v4
+  version: 2022d04b94f50056a09962b1ac81cdd821d20a55
+testImports:
+- name: github.com/davecgh/go-spew
+  version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9
+  subpackages:
+  - spew
+- name: github.com/pmezard/go-difflib
+  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
+  subpackages:
+  - difflib
+- name: github.com/stretchr/testify
+  version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0
+  subpackages:
+  - assert
+  - require
+  - suite
