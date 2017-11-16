@@ -4,3 +4,6 @@
 # Build directory
 !/build/.gitkeep
 /build
+
+# Dependencies
+/vendor/*
