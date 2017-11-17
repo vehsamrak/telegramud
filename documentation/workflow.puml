@@ -1,0 +1,16 @@
+@startuml
+(*)  --> "user enters game channel"
+
+If "user is new" then
+    --> [Yes] "register user"
+    --> "greet user"
+else
+    --> [No] "login user"
+    --> "greet user"
+Endif
+
+--> "show user's current location"
+
+--> "user leaves game channel"
+-->(*)
+@enduml
