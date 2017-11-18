@@ -3,9 +3,11 @@
 
 If "user is new" then
     --> [Yes] "register user"
+    --> "save user to database"
     --> "greet user"
 else
     --> [No] "login user"
+    --> "load user from database"
     --> "greet user"
 Endif
 
