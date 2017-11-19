@@ -40,7 +40,9 @@ script:
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
 
   # Installing migration tool
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose run application apk add --no-cache gcc && go get github.com/rubenv/sql-migrate/...; else echo "skipped"; fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then ssh ${DEPLOY_SSH_USER}@${DEPLOY_SSH_HOST} wget https://github.com/Vehsamrak/sql-migrate-ubuntu/releases/download/1.0.0/sql-migrate; else echo "skipped"; fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then ssh ${DEPLOY_SSH_USER}@${DEPLOY_SSH_HOST} chmod +x sql-migrate; else echo "skipped"; fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then ssh ${DEPLOY_SSH_USER}@${DEPLOY_SSH_HOST} sql-migrate; else echo "skipped"; fi
 
   # Running migrations
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose run application sql-migrate up -config=infrastructure/migrations/dbconfig.yml; else echo "skipped"; fi
