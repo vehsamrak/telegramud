@@ -7,28 +7,22 @@ If "user is new" then
     --> "save user to database"
     --> "greet user"
 else
-    --> [ No ] "ask for password"
+    --> [ No ] "load user from database"
+    --> "greet user"
+Endif
 
-        If "password is correct" then
-            --> [ Yes ] "load user from database"
-            --> "greet user"
+--> "show user's current location"
+--> "wait for user command"
 
-            --> "show user's current location"
-            --> "wait for user command"
-
-            If "command exists" then
-                --> [ Yes ] "execute command"
-                --> "wait for user command"
-            else
-                --> [ No ] "wait for user command"
-            else
-                --> [ Command is "exit" ] "bid user farewell"
-                --> "user leaves game channel"
-                -->(*)
-            Endif
-        else
-            --> [ No ] "ask for password"
-        Endif
+If "command exists" then
+    --> [ Yes ] "execute command"
+    --> "wait for user command"
+else
+    --> [ No ] "wait for user command"
+else
+    --> [ Command is "exit" ] "bid user farewell"
+    --> "user leaves game channel"
+    -->(*)
 Endif
 
 @enduml
