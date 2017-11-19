@@ -1,18 +1,34 @@
 @startuml
+
 (*)  --> "user enters game channel"
 
 If "user is new" then
-    --> [Yes] "register user"
+    --> [ Yes ] "register user"
     --> "save user to database"
     --> "greet user"
 else
-    --> [No] "login user"
-    --> "load user from database"
-    --> "greet user"
+    --> [ No ] "ask for password"
+
+        If "password is correct" then
+            --> [ Yes ] "load user from database"
+            --> "greet user"
+
+            --> "show user's current location"
+            --> "wait for user command"
+
+            If "command exists" then
+                --> [ Yes ] "execute command"
+                --> "wait for user command"
+            else
+                --> [ No ] "wait for user command"
+            else
+                --> [ Command is "exit" ] "bid user farewell"
+                --> "user leaves game channel"
+                -->(*)
+            Endif
+        else
+            --> [ No ] "ask for password"
+        Endif
 Endif
 
---> "show user's current location"
-
---> "user leaves game channel"
--->(*)
 @enduml
