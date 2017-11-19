@@ -40,7 +40,7 @@ script:
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
 
   # Installing migration tool (trying new configuration approach without env variables)
-  - docker-compose -H ${DEPLOY_SSH_HOST}:${DEPLOY_DOCKER_PORT} --tlsverify --tlscacert ca.pem --tlscert cert.pem --tlskey key.pem run application go get github.com/rubenv/sql-migrate/...
+  - docker-compose -H ${DEPLOY_SSH_HOST}:${DEPLOY_DOCKER_PORT} --tlsverify --tlscacert ${DOCKER_CERT_PATH}/ca.pem --tlscert ${DOCKER_CERT_PATH}/cert.pem --tlskey ${DOCKER_CERT_PATH}/key.pem run application go get github.com/rubenv/sql-migrate/...
 
   # Installing migration tool
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose run application go get github.com/rubenv/sql-migrate/...; else echo "skipped"; fi
