@@ -39,15 +39,18 @@ script:
   - export DOCKER_TLS_VERIFY=1
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
 
+  # Installing migration tool
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose run application go get github.com/rubenv/sql-migrate/...; else echo "skipped"; fi
+
+  # Running migrations
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose run application sql-migrate up -config=infrastructure/migrations/dbconfig.yml; else echo "skipped"; fi
+
   # Stopping old application
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker --tlsverify -H=${DOCKER_HOST} --tlscacert=${DOCKER_CERT_PATH}/ca.pem --tlscert=${DOCKER_CERT_PATH}/cert.pem --tlskey=${DOCKER_CERT_PATH}/key.pem ps -a; else echo "skipped"; fi
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose down; else echo "skipped"; fi
 
   # Starting new application
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose up -d --build; else echo "skipped"; fi
-
-  # Running migrations
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose run application go run -v game.go -migrate; else echo "skipped"; fi
 
   # Clearing unused images and containers
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker --tlsverify -H=${DOCKER_HOST} --tlscacert=${DOCKER_CERT_PATH}/ca.pem --tlscert=${DOCKER_CERT_PATH}/cert.pem --tlskey=${DOCKER_CERT_PATH}/key.pem image prune -f; else echo "skipped"; fi
