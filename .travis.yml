@@ -39,8 +39,6 @@ script:
   - export DOCKER_TLS_VERIFY=1
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
 
-  - cat ~/.ssh/config
-
   # Installing migration tool
   - if [ "$TRAVIS_BRANCH" == "master" ]; then ssh deploy wget https://github.com/Vehsamrak/sql-migrate-ubuntu/releases/download/1.0.0/sql-migrate; else echo "skipped"; fi
   - if [ "$TRAVIS_BRANCH" == "master" ]; then ssh deploy chmod +x sql-migrate; else echo "skipped"; fi
