@@ -40,7 +40,7 @@ script:
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
 
   # Installing migration tool
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose run application go get github.com/rubenv/sql-migrate/...; else echo "skipped"; fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose run (apk add --no-cache gcc && application go get github.com/rubenv/sql-migrate/... && apk del --no-cache gcc); else echo "skipped"; fi
 
   # Running migrations
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose run application sql-migrate up -config=infrastructure/migrations/dbconfig.yml; else echo "skipped"; fi
