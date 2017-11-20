@@ -31,9 +31,6 @@ before_script:
   - gpg --yes --batch --passphrase=${DEPLOY_KEY_PASSWORD} docker-ssl.tar.tgz.gpg
   - tar -zxvf docker-ssl.tar.tgz
 
-  - ssh-keygen -y -f ~/.ssh/deploy.key > ~/.ssh/id_rsa.pub
-  - cat ~/.ssh/id_rsa.pub
-
   # Running tests
   - docker-compose run --no-deps application go test -v ./tests/...
 script:
@@ -43,7 +40,7 @@ script:
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
 
   # Installing migration tool
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then ssh deploy wget https://github.com/Vehsamrak/sql-migrate-ubuntu/releases/download/1.0.0/sql-migrate; else echo "skipped"; fi
+  - ssh deploy wget https://github.com/Vehsamrak/sql-migrate-ubuntu/releases/download/1.0.0/sql-migrate
   - if [ "$TRAVIS_BRANCH" == "master" ]; then ssh deploy chmod +x sql-migrate; else echo "skipped"; fi
   - if [ "$TRAVIS_BRANCH" == "master" ]; then ssh deploy sql-migrate; else echo "skipped"; fi
 
