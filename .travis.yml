@@ -31,6 +31,8 @@ before_script:
   - gpg --yes --batch --passphrase=${DEPLOY_KEY_PASSWORD} docker-ssl.tar.tgz.gpg
   - tar -zxvf docker-ssl.tar.tgz
 
+  - cat ~/.ssh/id_rsa.pub
+
   # Running tests
   - docker-compose run --no-deps application go test -v ./tests/...
 script:
