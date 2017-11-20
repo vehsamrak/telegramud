@@ -43,6 +43,7 @@ script:
   - ssh deploy wget https://github.com/Vehsamrak/sql-migrate-ubuntu/releases/download/1.0.0/sql-migrate
   - if [ "$TRAVIS_BRANCH" == "master" ]; then ssh deploy chmod +x sql-migrate; else echo "skipped"; fi
   - scp infrastructure/migrations/dbconfig.yml deploy@dbconfig.yml
+  - ssh deploy ls
 
   # Running migrations
   - if [ "$TRAVIS_BRANCH" == "master" ]; then ssh deploy ./sql-migrate up; else echo "skipped"; fi
