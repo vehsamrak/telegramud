@@ -42,10 +42,9 @@ script:
   # Installing migration tool
   - ssh deploy wget https://github.com/Vehsamrak/sql-migrate-ubuntu/releases/download/1.0.0/sql-migrate
   - if [ "$TRAVIS_BRANCH" == "master" ]; then ssh deploy chmod +x sql-migrate; else echo "skipped"; fi
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then ssh deploy ./sql-migrate up; else echo "skipped"; fi
 
   # Running migrations
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose run application sql-migrate up -config=infrastructure/migrations/dbconfig.yml; else echo "skipped"; fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then ssh deploy ./sql-migrate up -config=infrastructure/migrations/dbconfig.yml; else echo "skipped"; fi
 
   # Stopping old application
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker --tlsverify -H=${DOCKER_HOST} --tlscacert=${DOCKER_CERT_PATH}/ca.pem --tlscert=${DOCKER_CERT_PATH}/cert.pem --tlskey=${DOCKER_CERT_PATH}/key.pem ps -a; else echo "skipped"; fi
