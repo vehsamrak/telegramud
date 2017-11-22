@@ -1,0 +1,11 @@
+{
+  "driver": "postgresql",
+  "protocol": "tcp",
+  "host": "database",
+  "port": 5432,
+  "user": "telegramud",
+  "password": "",
+  "database": "telegramud",
+  "directory": "/project",
+  "table": "migrations"
+}

@@ -20,5 +20,15 @@ services:
     ports:
       - "5433:5432"
 
+  migrator:
+    container_name: telegramud_migrator
+    build:
+      context: .
+      dockerfile: ./infrastructure/Dockerfile-migrator
+    image: telegramud-migrator:1.0
+    volumes:
+      - ./infrastructure/migrations:/project
+    command: /project/migrator-entrypoint.sh
+
 volumes:
   database-data:
