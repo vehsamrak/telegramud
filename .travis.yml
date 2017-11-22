@@ -51,9 +51,9 @@ script:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker ps -a; else echo "skipped"; fi
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose down; else echo "skipped"; fi
 
-  # Starting new application
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose up -d --build; else echo "skipped"; fi
-
   # Clearing unused images and containers
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker --tlsverify -H=${DOCKER_HOST} --tlscacert=${DOCKER_CERT_PATH}/ca.pem --tlscert=${DOCKER_CERT_PATH}/cert.pem --tlskey=${DOCKER_CERT_PATH}/key.pem image prune -f; else echo "skipped"; fi
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker --tlsverify -H=${DOCKER_HOST} --tlscacert=${DOCKER_CERT_PATH}/ca.pem --tlscert=${DOCKER_CERT_PATH}/cert.pem --tlskey=${DOCKER_CERT_PATH}/key.pem container prune -f; else echo "skipped"; fi
+
+  # Starting new application
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker-compose up -d --build; else echo "skipped"; fi
