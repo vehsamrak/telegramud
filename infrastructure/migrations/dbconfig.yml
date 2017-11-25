@@ -1,5 +1,0 @@
-development:
-    dialect: postgres
-    datasource: user=telegramud port=5433 dbname=telegramud sslmode=disable
-    table: migrations
-    dir: .
