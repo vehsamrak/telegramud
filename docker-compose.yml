@@ -10,8 +10,8 @@ services:
     environment:
       - TELEGRAM_APPLICATION_MUD_TOKEN
     volumes:
-      - .:/go/src/github.com/vehsamrak/telegramud
-    command: glide install && go run game.go
+      - .:/project
+    command: /project/entrypoint.sh
 
   database:
     container_name: telegramud_database
