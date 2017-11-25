@@ -1,4 +1,4 @@
-language: go
+language: true
 
 env:
   DOCKER_COMPOSE_VERSION: 1.8.0
@@ -34,9 +34,10 @@ before_script:
   # Running tests
   - docker-compose run --no-deps application go test -v ./tests/...
 script:
+  # Processing only master branch
   - if [ "$TRAVIS_BRANCH" != "master" ]; then exit; else echo "Running master tasks."; fi
 
-  # Deploy with docker compose only for branch master
+  # Configuring remote docker deployment
   - export DOCKER_HOST=${DEPLOY_SSH_HOST}:${DEPLOY_DOCKER_PORT}
   - export DOCKER_TLS_VERIFY=1
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
