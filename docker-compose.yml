@@ -9,6 +9,8 @@ services:
     image: telegramud-application:1.0
     environment:
       - TELEGRAM_APPLICATION_MUD_TOKEN
+    volumes:
+      - .:/go/src/github.com/vehsamrak/telegramud
     command: go run game.go
 
   database:

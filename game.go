@@ -6,13 +6,11 @@ import (
     "log"
     "os"
     "strings"
-    "flag"
     "github.com/vehsamrak/osinterrupt"
 
     "github.com/vehsamrak/telegramud/internal/commands"
     "github.com/vehsamrak/telegramud/internal/services"
     "github.com/vehsamrak/telegramud/internal/entities"
-    "github.com/vehsamrak/telegramud/internal/migrations"
 )
 
 var (
@@ -22,8 +20,6 @@ var (
 )
 
 func main() {
-    processMigrations()
-
     osinterrupt.HandleTerminateSignal(func() {
         worldSaver.Save()
     })
@@ -104,17 +100,6 @@ func main() {
             message.ParseMode = "markdown"
             telegramBot.Send(message)
         }
-    }
-}
-
-// Run automatic migrations on database if flag -migrate passed
-func processMigrations() {
-    processMigrations := flag.Bool("migrate", false, "Process database migrations")
-    flag.Parse()
-
-    if *processMigrations {
-        migrations.Migrate()
-        os.Exit(0)
     }
 }
 

@@ -1,7 +1,6 @@
 FROM golang:1.9-alpine
 
 WORKDIR /go/src/github.com/vehsamrak/telegramud
-ADD . .
 
 RUN apk add --no-cache git
 RUN go get -v ./internal/...
