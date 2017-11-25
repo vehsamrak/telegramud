@@ -43,23 +43,15 @@ script:
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
 
   # Running migrations
-  - ssh deploy ./sql-migrate up
-
-  # Installing migration tool
-  - ssh deploy '[ -f sql-migrate ] || wget https://github.com/Vehsamrak/sql-migrate-ubuntu/releases/download/1.0.0/sql-migrate'
-  - ssh deploy chmod +x sql-migrate
-  - scp infrastructure/migrations/dbconfig.yml deploy:dbconfig.yml
-
-  # Running migrations
-  - ssh deploy ./sql-migrate up
+  - docker-compose run migrator ls
 
   # Stopping old application
   - docker ps -a
   - docker-compose down
 
   # Clearing unused images and containers
-  - docker --tlsverify -H=${DOCKER_HOST} --tlscacert=${DOCKER_CERT_PATH}/ca.pem --tlscert=${DOCKER_CERT_PATH}/cert.pem --tlskey=${DOCKER_CERT_PATH}/key.pem image prune -f
-  - docker --tlsverify -H=${DOCKER_HOST} --tlscacert=${DOCKER_CERT_PATH}/ca.pem --tlscert=${DOCKER_CERT_PATH}/cert.pem --tlskey=${DOCKER_CERT_PATH}/key.pem container prune -f
+  - docker container prune -f
+  - docker image prune -f
 
   # Starting new application
   - docker-compose up -d --build
