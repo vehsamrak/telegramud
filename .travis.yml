@@ -42,8 +42,6 @@ before_deploy:
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
 
 deploy:
-  skip_cleanup: true
-
   - if [ "$TRAVIS_BRANCH" != "master" ]; then exit; else echo "Running master tasks."; fi
 
   # Running migrations
