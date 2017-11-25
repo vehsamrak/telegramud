@@ -43,7 +43,7 @@ script:
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
 
   # Running migrations
-  - docker-compose run migrator ls
+  - docker-compose run application go run infrastructure/migrations/migrate.go
 
   # Stopping old application
   - docker ps -a
