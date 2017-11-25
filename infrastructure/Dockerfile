@@ -2,7 +2,8 @@ FROM golang:1.9-alpine
 
 WORKDIR /go/src/github.com/vehsamrak/telegramud
 
-RUN apk add --no-cache git
+RUN apk add --no-cache git curl
+RUN curl https://glide.sh/get | sh
 RUN glide install
 RUN go get github.com/stretchr/testify
 RUN go get github.com/vehsamrak/osinterrupt
