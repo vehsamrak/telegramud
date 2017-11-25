@@ -11,7 +11,7 @@ services:
       - TELEGRAM_APPLICATION_MUD_TOKEN
     volumes:
       - .:/go/src/github.com/vehsamrak/telegramud
-    command: go run game.go
+    command: glide install && go run game.go
 
   database:
     container_name: telegramud_database
