@@ -31,13 +31,21 @@ before_script:
   - gpg --yes --batch --passphrase=${DEPLOY_KEY_PASSWORD} docker-ssl.tar.tgz.gpg
   - tar -zxvf docker-ssl.tar.tgz
 
+script:
   # Running tests
   - docker-compose run --no-deps application go test -v ./tests/...
-script:
+
+before_deploy:
   # Deploy with docker compose only for branch master
   - export DOCKER_HOST=${DEPLOY_SSH_HOST}:${DEPLOY_DOCKER_PORT}
   - export DOCKER_TLS_VERIFY=1
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
+
+deploy:
+  skip_cleanup: true
+
+  # Running migrations
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then ssh deploy ./sql-migrate up; else echo "skipped"; fi
 
   # Installing migration tool
   - if [ "$TRAVIS_BRANCH" == "master" ]; then ssh deploy '[ -f sql-migrate ] || wget https://github.com/Vehsamrak/sql-migrate-ubuntu/releases/download/1.0.0/sql-migrate'; else echo "skipped"; fi
