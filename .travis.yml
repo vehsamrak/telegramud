@@ -32,6 +32,9 @@ before_script:
   # Running tests
   - docker-compose run --no-deps --entrypoint infrastructure/entrypoint-test.sh application
 script:
+  -ls
+  -ls infrastructure
+
   # Processing only master branch
   - if [ "$TRAVIS_BRANCH" != "master" ]; then exit; else echo "Running master tasks."; fi
 
@@ -41,6 +44,8 @@ script:
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
 
   # Running migrations
+  - docker-compose run --no-deps application ls
+  - docker-compose run --no-deps application ls infrastructure
   - docker-compose run --no-deps --entrypoint infrastructure/entrypoint-migrate.sh application
 
   # Stopping old application
