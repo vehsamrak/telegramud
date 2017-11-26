@@ -28,8 +28,6 @@ before_script:
   # Running tests
   - docker-compose run --no-deps --entrypoint infrastructure/entrypoint-test.sh application
 
-  # Building application
-  - docker-compose build
 script:
   # Processing only master branch
   - if [ "$TRAVIS_BRANCH" != "master" ]; then exit; else echo "Running master tasks."; fi
@@ -38,6 +36,9 @@ script:
   - export DOCKER_HOST=${DEPLOY_SSH_HOST}:${DEPLOY_DOCKER_PORT}
   - export DOCKER_TLS_VERIFY=1
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
+
+  # Building application
+  - docker-compose build
 
   # Running migrations
   - docker-compose run --entrypoint infrastructure/entrypoint-migrate.sh application || exit
