@@ -50,9 +50,5 @@ script:
   - docker ps -a
   - docker-compose down
 
-  # Clearing unused images and containers
-  - docker container prune -f
-  - docker image prune -f
-
   # Starting new application
   - docker-compose up -d
