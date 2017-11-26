@@ -42,12 +42,12 @@ script:
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
 
   # Running migrations
-  - docker-compose run --no-deps application ls
-  - docker-compose run --no-deps application ls infrastructure
-  - docker-compose run --no-deps application ls /go/src/github.com/vehsamrak/telegramud/infrastructure/migrations/migrate.go
-  - docker-compose run --no-deps application ls /go/src/github.com/vehsamrak/telegramud/infrastructure
-  - docker-compose run --no-deps application ls /go/src/github.com/vehsamrak/telegramud
-  - docker-compose run --no-deps --entrypoint infrastructure/entrypoint-migrate.sh application
+  - docker-compose run --build application ls
+  - docker-compose run application ls infrastructure
+  - docker-compose run application ls /go/src/github.com/vehsamrak/telegramud/infrastructure/migrations/migrate.go
+  - docker-compose run application ls /go/src/github.com/vehsamrak/telegramud/infrastructure
+  - docker-compose run application ls /go/src/github.com/vehsamrak/telegramud
+  - docker-compose run --entrypoint infrastructure/entrypoint-migrate.sh application
 
   # Stopping old application
   - docker ps -a
