@@ -30,7 +30,6 @@ before_script:
   - tar -zxvf docker-ssl.tar.tgz
 
   # Running tests
-  - docker-compose run --no-deps application ls infrastructure/entrypoint-test.sh
   - docker-compose run --no-deps --entrypoint infrastructure/entrypoint-test.sh application
 script:
   # Processing only master branch
@@ -44,6 +43,8 @@ script:
   # Running migrations
   - docker-compose run application pwd
   - docker-compose run application ls
+  - docker-compose run application ls infrastructure
+  - docker-compose run application ls infrastructure/migrations/
   - docker-compose run application ls infrastructure/migrations/migrate.go
   - docker-compose run application go run infrastructure/migrations/migrate.go
 
@@ -56,4 +57,4 @@ script:
   - docker image prune -f
 
   # Starting new application
-  - docker-compose up -d --build
+  - docker-compose up -d
