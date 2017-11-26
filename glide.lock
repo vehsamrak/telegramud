@@ -1,5 +1,5 @@
 hash: 2c1f70b746491a16d2e84abc9d4ddbd3727f8adfed7a2ff40e000bfc97553ffa
-updated: 2017-11-15T00:18:04.500879853+03:00
+updated: 2017-11-27T01:52:46.704711248+03:00
 imports:
 - name: github.com/jinzhu/gorm
   version: 5174cc5c242a728b435ea2be8a2f7f998e15429b
@@ -12,10 +12,16 @@ imports:
   subpackages:
   - hstore
   - oid
+- name: github.com/rubenv/sql-migrate
+  version: e2c068b24b5e367fdce5c208e280839f9ae0940f
+  subpackages:
+  - sqlparse
 - name: github.com/technoweenie/multipartstreamer
   version: a90a01d73ae432e2611d178c18367fbaa13e0154
 - name: github.com/vehsamrak/osinterrupt
   version: 3280bebc86867a016f9858fe7664b7a3a94f4cf5
+- name: gopkg.in/gorp.v1
+  version: c87af80f3cc5036b55b83d77171e156791085e2e
 - name: gopkg.in/telegram-bot-api.v4
   version: 2022d04b94f50056a09962b1ac81cdd821d20a55
 testImports:
