@@ -18,7 +18,7 @@ services:
       dockerfile: ./infrastructure/Dockerfile-database
     image: telegramud-database:1.0
     volumes:
-      - database-data:/var/lib/postgresql
+      - database-data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
 
