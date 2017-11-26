@@ -30,9 +30,6 @@ before_script:
   - tar -zxvf docker-ssl.tar.tgz
 
 script:
-  - ls
-  - ls infrastructure
-
   # Processing only master branch
   - if [ "$TRAVIS_BRANCH" != "master" ]; then exit; else echo "Running master tasks."; fi
 
@@ -43,12 +40,7 @@ script:
 
   # Running migrations
   - docker-compose build
-  - docker-compose run application ls
-  - docker-compose run application ls infrastructure
-  - docker-compose run application ls /go/src/github.com/vehsamrak/telegramud/infrastructure/migrations/migrate.go
-  - docker-compose run application ls /go/src/github.com/vehsamrak/telegramud/infrastructure
-  - docker-compose run application ls /go/src/github.com/vehsamrak/telegramud
-  - docker-compose run --entrypoint infrastructure/entrypoint-migrate.sh application
+  - docker-compose run --entrypoint infrastructure/entrypoint-migrate.sh application || exit
 
   # Stopping old application
   - docker ps -a
