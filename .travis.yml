@@ -42,7 +42,8 @@ script:
   - export DOCKER_CERT_PATH=${TRAVIS_BUILD_DIR}/docker-ssl
 
   # Running migrations
-  - docker-compose run --build application ls
+  - docker-compose build
+  - docker-compose run application ls
   - docker-compose run application ls infrastructure
   - docker-compose run application ls /go/src/github.com/vehsamrak/telegramud/infrastructure/migrations/migrate.go
   - docker-compose run application ls /go/src/github.com/vehsamrak/telegramud/infrastructure
