@@ -44,6 +44,9 @@ script:
   # Running migrations
   - docker-compose run --no-deps application ls
   - docker-compose run --no-deps application ls infrastructure
+  - docker-compose run --no-deps application ls /go/src/github.com/vehsamrak/telegramud/infrastructure/migrations/migrate.go
+  - docker-compose run --no-deps application ls /go/src/github.com/vehsamrak/telegramud/infrastructure
+  - docker-compose run --no-deps application ls /go/src/github.com/vehsamrak/telegramud
   - docker-compose run --no-deps --entrypoint infrastructure/entrypoint-migrate.sh application
 
   # Stopping old application
