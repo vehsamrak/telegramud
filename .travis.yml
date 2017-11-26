@@ -32,10 +32,7 @@ before_script:
   - tar -zxvf docker-ssl.tar.tgz
 
   # Running tests
-  - docker-compose run --no-deps application ls
-  - docker-compose run --no-deps application pwd
-  - docker-compose run --no-deps application ls /project
-  - docker-compose run --no-deps application go test -v /project/tests/...
+  - docker-compose run --no-deps application go test -v github.com/vehsamrak/telegramud/tests/...
 script:
   # Processing only master branch
   - if [ "$TRAVIS_BRANCH" != "master" ]; then exit; else echo "Running master tasks."; fi
