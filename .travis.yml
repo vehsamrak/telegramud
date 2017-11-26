@@ -42,13 +42,13 @@ script:
   - docker-compose build
   - docker-compose run --entrypoint infrastructure/entrypoint-migrate.sh application || exit
 
-  # Stopping old application
-  - docker ps -a
-  - docker-compose down
-
-  # Clearing unused images and containers
-  - docker container prune -f
-  - docker image prune -f
-
-  # Starting new application
-  - docker-compose up -d
+#  # Stopping old application
+#  - docker ps -a
+#  - docker-compose down
+#
+#  # Clearing unused images and containers
+#  - docker container prune -f
+#  - docker image prune -f
+#
+#  # Starting new application
+#  - docker-compose up -d
