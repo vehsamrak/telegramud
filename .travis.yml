@@ -30,8 +30,8 @@ before_script:
   - tar -zxvf docker-ssl.tar.tgz
 
 script:
-  -ls
-  -ls infrastructure
+  - ls
+  - ls infrastructure
 
   # Processing only master branch
   - if [ "$TRAVIS_BRANCH" != "master" ]; then exit; else echo "Running master tasks."; fi
