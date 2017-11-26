@@ -1,17 +1,16 @@
 -- +migrate Up
-create table rooms
+CREATE TABLE rooms
 (
-  id varchar(100) not null
-    constraint rooms_pkey
-    primary key,
-  name varchar(100),
+  id          varchar(100) NOT NULL
+    CONSTRAINT rooms_pkey
+    PRIMARY KEY,
+  name        varchar(100),
   description text,
   coordinates text
-)
-;
+);
 
-create unique index uix_rooms_coordinates
-  on rooms (coordinates)
-;
+CREATE UNIQUE INDEX uix_rooms_coordinates
+  ON rooms (coordinates);
 
 -- +migrate Down
+DROP TABLE public.rooms;
