@@ -30,7 +30,7 @@ before_script:
   - tar -zxvf docker-ssl.tar.tgz
 
   # Running tests
-  - docker-compose run --no-deps --entrypoint go/src/github.com/vehsamrak/telegramud/infrastructure/entrypoint-test.sh application
+  - docker-compose run --no-deps --entrypoint /go/src/github.com/vehsamrak/telegramud/infrastructure/entrypoint-test.sh application
 script:
   # Processing only master branch
   - if [ "$TRAVIS_BRANCH" != "master" ]; then exit; else echo "Running master tasks."; fi
