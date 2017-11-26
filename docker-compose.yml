@@ -11,7 +11,7 @@ services:
       - TELEGRAM_APPLICATION_MUD_TOKEN
     volumes:
       - .:/go/src/github.com/vehsamrak/telegramud
-    command: /go/src/github.com/vehsamrak/telegramud/infrastructure/entrypoint.sh
+    command: infrastructure/entrypoint.sh
 
   database:
     container_name: telegramud_database
