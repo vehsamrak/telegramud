@@ -14,7 +14,7 @@ import (
 )
 
 var (
-    database   = &services.Database{}
+    database   = &services.Database{Password: os.Getenv("TELEGRAM_APPLICATION_MUD_DATABASE_PASSWORD")}
     worldSaver = &services.WorldSaver{Database: database}
     worldRooms = (&services.RoomGenerator{}).CreateWorld(database.GetConnection())
 )
