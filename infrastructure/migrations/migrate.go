@@ -9,11 +9,6 @@ import (
     _ "github.com/lib/pq"
 )
 
-const DATABASE_DRIVER = "postgres"
-const DATABASE_NAME = "telegramud"
-const DATABASE_USER = "telegramud"
-const DATABASE_HOST = "database:5432/"
-const DATABASE_DATA_SOURCE = "postgres://" + DATABASE_HOST + DATABASE_NAME + "?sslmode=disable;user=" + DATABASE_USER
 const MIGRATIONS_PATH = "infrastructure/migrations"
 
 // Run database migrations
@@ -22,14 +17,16 @@ func main() {
 
     migrations := &migrate.FileMigrationSource{Dir: MIGRATIONS_PATH}
 
-    database, error := sql.Open(DATABASE_DRIVER, DATABASE_DATA_SOURCE)
+    database, error := sql.Open("postgres", "postgres://database:5432/telegramud?sslmode=disable;user=telegramud")
     defer database.Close()
 
     if error != nil {
         fmt.Println(error)
     }
 
-    executedMigrationsCount, error := migrate.Exec(database, DATABASE_DRIVER, migrations, migrate.Up)
+    fmt.Println(migrations)
+
+    executedMigrationsCount, error := migrate.Exec(database, "postgres", migrations, migrate.Up)
     if error != nil {
         fmt.Println(error)
     }
