@@ -24,8 +24,6 @@ func main() {
         fmt.Println(error)
     }
 
-    fmt.Println(migrations)
-
     executedMigrationsCount, error := migrate.Exec(database, "postgres", migrations, migrate.Up)
     if error != nil {
         fmt.Println(error)
