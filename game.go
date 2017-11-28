@@ -11,6 +11,7 @@ import (
     "github.com/vehsamrak/telegramud/internal/commands"
     "github.com/vehsamrak/telegramud/internal/services"
     "github.com/vehsamrak/telegramud/internal/entities"
+    "fmt"
 )
 
 var (
@@ -50,6 +51,8 @@ func main() {
         if update.Message == nil || update.Message.Text == "" {
             continue
         }
+
+        fmt.Println("Raw command: " + update.Message.Text)
 
         commandName, commandParameters := parseCommand(update)
         username := update.Message.From.UserName
