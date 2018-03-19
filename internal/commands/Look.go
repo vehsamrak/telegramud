@@ -1,21 +1,21 @@
 package commands
 
 import (
-    "fmt"
+	"fmt"
 
-    "github.com/vehsamrak/telegramud/internal/entities"
+	"github.com/vehsamrak/telegramud/internal/entities"
 )
 
 type Look struct {
-    User *entities.User
+	User *entities.User
 }
 
 func (command Look) GetNames() []string {
-    return []string{"look", "смотреть"}
+	return []string{"look", "смотреть"}
 }
 
 func (command Look) Execute() string {
-    currentRoom := command.User.Room
+	currentRoom := command.User.Room
 
-    return fmt.Sprintf("*%v*\n%v\n", currentRoom.Name, currentRoom.Description)
+	return fmt.Sprintf("*%v*\n%v\n", currentRoom.Name, currentRoom.Description)
 }

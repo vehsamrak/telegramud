@@ -1,26 +1,26 @@
 package tests
 
 import (
-    "testing"
-    "github.com/stretchr/testify/assert"
-    "github.com/vehsamrak/telegramud/internal/commands"
-    "github.com/stretchr/testify/suite"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
+	"github.com/vehsamrak/telegramud/internal/commands"
+	"testing"
 )
 
 func Test_Test(test *testing.T) {
-    suite.Run(test, new(TestTest))
+	suite.Run(test, new(TestTest))
 }
 
 type TestTest struct {
-    suite.Suite
+	suite.Suite
 }
 
 func (suite *TestTest) SetupTest() {}
 
 func (suite *TestTest) TestGetNames_emptyParameters_stringReturned() {
-    command := commands.Test{}
+	command := commands.Test{}
 
-    commandResult := command.Execute()
+	commandResult := command.Execute()
 
-    assert.Equal(suite.T(), commandResult, "Тест пройден!")
+	assert.Equal(suite.T(), commandResult, "Тест пройден!")
 }

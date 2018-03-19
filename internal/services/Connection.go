@@ -3,15 +3,15 @@ package services
 import "github.com/vehsamrak/telegramud/internal/entities"
 
 type Connection struct {
-    executor Executor
-    ChatId   int64
-    User     *entities.User
+	executor Executor
+	ChatId   int64
+	User     *entities.User
 }
 
 func (connection *Connection) GetExecutor() Executor {
-    return connection.executor
+	return connection.executor
 }
 
 func (connection *Connection) SetExecutor(executor Executor) {
-    connection.executor = executor
+	connection.executor = executor
 }

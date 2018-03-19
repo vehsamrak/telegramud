@@ -1,35 +1,35 @@
 package main
 
 import (
-    "os"
-    "fmt"
+	"fmt"
+	"os"
 
-    "database/sql"
-    "github.com/rubenv/sql-migrate"
-    _ "github.com/lib/pq"
+	"database/sql"
+	_ "github.com/lib/pq"
+	"github.com/rubenv/sql-migrate"
 )
 
 const MIGRATIONS_PATH = "infrastructure/migrations"
 
 // Run database migrations
 func main() {
-    fmt.Print("Migrating database...")
+	fmt.Print("Migrating database...")
 
-    migrations := &migrate.FileMigrationSource{Dir: MIGRATIONS_PATH}
+	migrations := &migrate.FileMigrationSource{Dir: MIGRATIONS_PATH}
 
-    database, error := sql.Open("postgres", "postgres://database:5432/telegramud?sslmode=disable;user=telegramud")
-    defer database.Close()
+	database, error := sql.Open("postgres", "postgres://database:5432/telegramud?sslmode=disable;user=telegramud")
+	defer database.Close()
 
-    if error != nil {
-        fmt.Println(error)
-    }
+	if error != nil {
+		fmt.Println(error)
+	}
 
-    executedMigrationsCount, error := migrate.Exec(database, "postgres", migrations, migrate.Up)
-    if error != nil {
-        fmt.Println(error)
-    }
+	executedMigrationsCount, error := migrate.Exec(database, "postgres", migrations, migrate.Up)
+	if error != nil {
+		fmt.Println(error)
+	}
 
-    fmt.Printf("done. Applied %d migrations!\n", executedMigrationsCount)
+	fmt.Printf("done. Applied %d migrations!\n", executedMigrationsCount)
 
-    os.Exit(0)
+	os.Exit(0)
 }

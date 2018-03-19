@@ -1,14 +1,14 @@
 package commands
 
 import (
-    "fmt"
-    "strings"
+	"fmt"
+	"strings"
 
-    "github.com/vehsamrak/telegramud/internal/entities"
+	"github.com/vehsamrak/telegramud/internal/entities"
 )
 
 type Ways struct {
-    User *entities.User
+	User *entities.User
 }
 
 func (command Ways) GetNames() []string {
@@ -16,20 +16,20 @@ func (command Ways) GetNames() []string {
 }
 
 func (command Ways) Execute() string {
-    currentRoomPassages := command.User.Room.Passages
+	currentRoomPassages := command.User.Room.Passages
 
-    var commandResult string
+	var commandResult string
 
-    if currentRoomPassages != nil {
-        var roomNames []string
-        for _, currentRoomPassage := range currentRoomPassages{
-            roomNames = append(roomNames, currentRoomPassage.RoomTo.Name)
-        }
+	if currentRoomPassages != nil {
+		var roomNames []string
+		for _, currentRoomPassage := range currentRoomPassages {
+			roomNames = append(roomNames, currentRoomPassage.RoomTo.Name)
+		}
 
-        commandResult = fmt.Sprintln("Доступные пути:", strings.Join(roomNames, ", "))
-    } else {
-        commandResult = "Отсюда нет видимых выходов."
-    }
+		commandResult = fmt.Sprintln("Доступные пути:", strings.Join(roomNames, ", "))
+	} else {
+		commandResult = "Отсюда нет видимых выходов."
+	}
 
-    return commandResult
+	return commandResult
 }

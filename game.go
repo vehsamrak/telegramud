@@ -1,129 +1,129 @@
 package main
 
 import (
-    "bytes"
-    "gopkg.in/telegram-bot-api.v4"
-    "log"
-    "os"
-    "strings"
-    "github.com/vehsamrak/osinterrupt"
+	"bytes"
+	"github.com/vehsamrak/osinterrupt"
+	"gopkg.in/telegram-bot-api.v4"
+	"log"
+	"os"
+	"strings"
 
-    "github.com/vehsamrak/telegramud/internal/commands"
-    "github.com/vehsamrak/telegramud/internal/services"
-    "github.com/vehsamrak/telegramud/internal/entities"
-    "fmt"
+	"fmt"
+	"github.com/vehsamrak/telegramud/internal/commands"
+	"github.com/vehsamrak/telegramud/internal/entities"
+	"github.com/vehsamrak/telegramud/internal/services"
 )
 
 var (
-    database   = &services.Database{Password: os.Getenv("TELEGRAM_APPLICATION_MUD_DATABASE_PASSWORD")}
-    worldSaver = &services.WorldSaver{Database: database}
-    worldRooms = (&services.RoomGenerator{}).CreateWorld(database.GetConnection())
+	database   = &services.Database{Password: os.Getenv("TELEGRAM_APPLICATION_MUD_DATABASE_PASSWORD")}
+	worldSaver = &services.WorldSaver{Database: database}
+	worldRooms = (&services.RoomGenerator{}).CreateWorld(database.GetConnection())
 )
 
 func main() {
-    osinterrupt.HandleTerminateSignal(func() {
-        worldSaver.Save()
-    })
+	osinterrupt.HandleTerminateSignal(func() {
+		worldSaver.Save()
+	})
 
-    telegramBot, fault := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_APPLICATION_MUD_TOKEN"))
-    if fault != nil {
-        log.Panic(fault)
-    }
+	telegramBot, fault := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_APPLICATION_MUD_TOKEN"))
+	if fault != nil {
+		log.Panic(fault)
+	}
 
-    log.Printf("Authorized on account @%s", telegramBot.Self.UserName)
+	log.Printf("Authorized on account @%s", telegramBot.Self.UserName)
 
-    databaseConnection := database.GetConnection()
-    defer worldSaver.Save()
-    defer databaseConnection.Close()
+	databaseConnection := database.GetConnection()
+	defer worldSaver.Save()
+	defer databaseConnection.Close()
 
-    updateConfig := tgbotapi.NewUpdate(0)
-    updateConfig.Timeout = 60
+	updateConfig := tgbotapi.NewUpdate(0)
+	updateConfig.Timeout = 60
 
-    updates, _ := telegramBot.GetUpdatesChan(updateConfig)
+	updates, _ := telegramBot.GetUpdatesChan(updateConfig)
 
-    players := map[string]*services.Connection{}
-    messenger := &services.Messenger{
-        TelegramBot:    telegramBot,
-        ConnectionPool: players,
-    }
+	players := map[string]*services.Connection{}
+	messenger := &services.Messenger{
+		TelegramBot:    telegramBot,
+		ConnectionPool: players,
+	}
 
-    for update := range updates {
-        if update.Message == nil || update.Message.Text == "" {
-            continue
-        }
+	for update := range updates {
+		if update.Message == nil || update.Message.Text == "" {
+			continue
+		}
 
-        fmt.Println("Raw command: " + update.Message.Text)
+		fmt.Println("Raw command: " + update.Message.Text)
 
-        commandName, commandParameters := parseCommand(update)
-        username := update.Message.From.UserName
-        currentConnection := players[username]
-        executorFactory := commands.ExecutorFactory{
-            ConnectionPool: players,
-            Messenger:      messenger,
-            Database:       database,
-        }
+		commandName, commandParameters := parseCommand(update)
+		username := update.Message.From.UserName
+		currentConnection := players[username]
+		executorFactory := commands.ExecutorFactory{
+			ConnectionPool: players,
+			Messenger:      messenger,
+			Database:       database,
+		}
 
-        var message tgbotapi.MessageConfig
-        if currentConnection == nil {
-            user := entities.User{UserName: username}
-            user = *user.FindByName(database.GetConnection(), username)
-            user.Room = worldRooms[0]
+		var message tgbotapi.MessageConfig
+		if currentConnection == nil {
+			user := entities.User{UserName: username}
+			user = *user.FindByName(database.GetConnection(), username)
+			user.Room = worldRooms[0]
 
-            currentConnection = &services.Connection{
-                ChatId: update.Message.Chat.ID,
-                User:   &user,
-            }
+			currentConnection = &services.Connection{
+				ChatId: update.Message.Chat.ID,
+				User:   &user,
+			}
 
-            executor := executorFactory.Create(commands.EXECUTOR_LOGIN, currentConnection)
-            currentConnection.SetExecutor(executor)
+			executor := executorFactory.Create(commands.EXECUTOR_LOGIN, currentConnection)
+			currentConnection.SetExecutor(executor)
 
-            players[username] = currentConnection
+			players[username] = currentConnection
 
-            messenger.SendMessage(
-                update.Message.Chat.ID,
-                "Добро пожаловать на *Экспериментальный Полигон*!\nИгроки онлайн: " + strings.Join(
-                    getPlayersNames(players),
-                    ", ",
-                ),
-            )
-        } else {
-            commandResult := currentConnection.GetExecutor().ExecuteCommand(commandName, commandParameters)
-            message = commandResult.Message
-            executorName := commandResult.ExecutorName
+			messenger.SendMessage(
+				update.Message.Chat.ID,
+				"Добро пожаловать на *Экспериментальный Полигон*!\nИгроки онлайн: "+strings.Join(
+					getPlayersNames(players),
+					", ",
+				),
+			)
+		} else {
+			commandResult := currentConnection.GetExecutor().ExecuteCommand(commandName, commandParameters)
+			message = commandResult.Message
+			executorName := commandResult.ExecutorName
 
-            if commandResult.IsEmpty {
-                continue
-            }
+			if commandResult.IsEmpty {
+				continue
+			}
 
-            if executorName != "" {
-                executor := executorFactory.Create(executorName, currentConnection)
-                currentConnection.SetExecutor(executor)
-            }
+			if executorName != "" {
+				executor := executorFactory.Create(executorName, currentConnection)
+				currentConnection.SetExecutor(executor)
+			}
 
-            message.ParseMode = "markdown"
-            telegramBot.Send(message)
-        }
-    }
+			message.ParseMode = "markdown"
+			telegramBot.Send(message)
+		}
+	}
 }
 
 func getPlayersNames(players map[string]*services.Connection) []string {
-    var playerNames []string
+	var playerNames []string
 
-    for _, player := range players {
-        playerNames = append(playerNames, player.User.UserName)
-    }
+	for _, player := range players {
+		playerNames = append(playerNames, player.User.UserName)
+	}
 
-    return playerNames
+	return playerNames
 }
 
 func parseCommand(update tgbotapi.Update) (commandName string, commandParameters []string) {
-    rawCommand := string(bytes.Trim([]byte(update.Message.Text), "\r\n\x00"))
-    rawCommand = strings.TrimSpace(rawCommand)
-    commandWithParameters := strings.Fields(rawCommand)
+	rawCommand := string(bytes.Trim([]byte(update.Message.Text), "\r\n\x00"))
+	rawCommand = strings.TrimSpace(rawCommand)
+	commandWithParameters := strings.Fields(rawCommand)
 
-    log.Printf("[%s] %s", update.Message.From.UserName, commandWithParameters)
+	log.Printf("[%s] %s", update.Message.From.UserName, commandWithParameters)
 
-    commandName = strings.ToLower(commandWithParameters[0])
+	commandName = strings.ToLower(commandWithParameters[0])
 
-    return commandName, commandWithParameters[1:]
+	return commandName, commandWithParameters[1:]
 }
