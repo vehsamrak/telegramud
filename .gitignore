@@ -1,6 +1,3 @@
-# PhpStorm
-.idea/
-
 # Build directory
 !/build/.gitkeep
 /build
