@@ -13,42 +13,62 @@ func main() {
 		log.Panic(err)
 	}
 
-	bot.Debug = true
+	bot.Debug = false
 
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
-
 	updates, _ := bot.GetUpdatesChan(u)
 
 	for update := range updates {
-		if update.Message == nil { // ignore any non-Message updates
+		if update.Message == nil && update.CallbackQuery == nil {
 			continue
 		}
 
-		if !update.Message.IsCommand() { // ignore any non-command Messages
-			continue
+		var inputText string
+		var chatId int64
+
+		if update.Message != nil {
+			inputText = update.Message.Text
+			chatId = update.Message.Chat.ID
 		}
 
-		// Create a new MessageConfig. We don't have text yet,
-		// so we should leave it empty.
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
-
-		// Extract the command from the Message.
-		switch update.Message.Command() {
-		case "help":
-			msg.Text = "type /sayhi or /status."
-		case "sayhi":
-			msg.Text = "Hi :)"
-		case "status":
-			msg.Text = "I'm ok."
-		default:
-			msg.Text = "I don't know that command"
+		if update.CallbackQuery != nil {
+			inputText = update.CallbackQuery.Data
+			chatId = update.CallbackQuery.Message.Chat.ID
+			bot.AnswerCallbackQuery(tgbotapi.NewCallback(update.CallbackQuery.ID, ""))
 		}
 
-		if _, err := bot.Send(msg); err != nil {
-			log.Panic(err)
+		outputMessage := tgbotapi.NewMessage(chatId, inputText)
+
+		switch inputText {
+		case "open":
+			outputMessage.ReplyMarkup = tgbotapi.NewReplyKeyboard(
+				tgbotapi.NewKeyboardButtonRow(
+					tgbotapi.NewKeyboardButton("1"),
+					tgbotapi.NewKeyboardButton("2"),
+					tgbotapi.NewKeyboardButton("3"),
+				),
+				tgbotapi.NewKeyboardButtonRow(
+					tgbotapi.NewKeyboardButton("4"),
+					tgbotapi.NewKeyboardButton("5"),
+					tgbotapi.NewKeyboardButton("6"),
+				),
+			)
+		case "test":
+			outputMessage.Text = "TEST"
+			outputMessage.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
+				tgbotapi.NewInlineKeyboardRow(
+					tgbotapi.NewInlineKeyboardButtonData("test", "ls"),
+					tgbotapi.NewInlineKeyboardButtonURL("first link", "google.com"),
+					tgbotapi.NewInlineKeyboardButtonURL("second link", "google.com"),
+				),
+			)
+		case "close":
+			outputMessage.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
 		}
+
+		bot.Send(outputMessage)
 	}
 }
