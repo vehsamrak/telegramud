@@ -28,6 +28,7 @@ func main() {
 
 		var inputText string
 		var chatId int64
+		var callerMessageId int
 
 		if update.Message != nil {
 			inputText = update.Message.Text
@@ -37,14 +38,16 @@ func main() {
 		if update.CallbackQuery != nil {
 			inputText = update.CallbackQuery.Data
 			chatId = update.CallbackQuery.Message.Chat.ID
+			callerMessageId = update.CallbackQuery.Message.MessageID
 			bot.AnswerCallbackQuery(tgbotapi.NewCallback(update.CallbackQuery.ID, ""))
 		}
 
-		outputMessage := tgbotapi.NewMessage(chatId, inputText)
+		var output *Output
+		output = &Output{ChatID: chatId}
 
 		switch inputText {
 		case "open":
-			outputMessage.ReplyMarkup = tgbotapi.NewReplyKeyboard(
+			output.SetReplyMarkup(tgbotapi.NewReplyKeyboard(
 				tgbotapi.NewKeyboardButtonRow(
 					tgbotapi.NewKeyboardButton("1"),
 					tgbotapi.NewKeyboardButton("2"),
@@ -55,20 +58,30 @@ func main() {
 					tgbotapi.NewKeyboardButton("5"),
 					tgbotapi.NewKeyboardButton("6"),
 				),
-			)
+			))
 		case "test":
-			outputMessage.Text = "TEST"
-			outputMessage.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
+			output.SetText("TEST")
+			output.SetReplyMarkup(tgbotapi.NewInlineKeyboardMarkup(
 				tgbotapi.NewInlineKeyboardRow(
 					tgbotapi.NewInlineKeyboardButtonData("test", "ls"),
 					tgbotapi.NewInlineKeyboardButtonURL("first link", "google.com"),
 					tgbotapi.NewInlineKeyboardButtonURL("second link", "google.com"),
 				),
-			)
+			))
+		case "edit":
+			output.SetReplyMarkup(tgbotapi.NewInlineKeyboardMarkup(
+				tgbotapi.NewInlineKeyboardRow(
+					tgbotapi.NewInlineKeyboardButtonData("edit", "edited"),
+				),
+			))
+		case "edited":
+			if callerMessageId != 0 {
+				output.SetEditMessage(callerMessageId, "edited")
+			}
 		case "close":
-			outputMessage.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
+			output.SetReplyMarkup(tgbotapi.NewRemoveKeyboard(true))
 		}
 
-		bot.Send(outputMessage)
+		bot.Send(output.CreateChattable())
 	}
 }
