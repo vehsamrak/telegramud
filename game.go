@@ -47,6 +47,7 @@ func main() {
 
 		output.Text = inputText
 
+		// input requests
 		switch inputText {
 		case "open":
 			output.SetReplyMarkup(tgbotapi.NewReplyKeyboard(
@@ -65,7 +66,7 @@ func main() {
 			output.SetText("TEST")
 			output.SetReplyMarkup(tgbotapi.NewInlineKeyboardMarkup(
 				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("test", "ls"),
+					tgbotapi.NewInlineKeyboardButtonData("test", "open"),
 					tgbotapi.NewInlineKeyboardButtonURL("first link", "google.com"),
 					tgbotapi.NewInlineKeyboardButtonURL("second link", "google.com"),
 				),
@@ -76,12 +77,18 @@ func main() {
 					tgbotapi.NewInlineKeyboardButtonData("edit", "edited"),
 				),
 			))
-		case "edited":
-			if callerMessageId != 0 {
-				output.SetEditMessage("edited")
-			}
 		case "close":
 			output.SetReplyMarkup(tgbotapi.NewRemoveKeyboard(true))
+		}
+
+		// callback requests
+		if callerMessageId != 0 {
+			switch inputText {
+			case "edited":
+				if callerMessageId != 0 {
+					output.SetEditMessage("edited")
+				}
+			}
 		}
 
 		bot.Send(output.CreateChattable())
