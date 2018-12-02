@@ -29,6 +29,7 @@ func main() {
 		var inputText string
 		var chatId int64
 		var callerMessageId int
+		var callerMessageText string
 
 		if update.Message != nil {
 			inputText = update.Message.Text
@@ -39,13 +40,12 @@ func main() {
 			inputText = update.CallbackQuery.Data
 			chatId = update.CallbackQuery.Message.Chat.ID
 			callerMessageId = update.CallbackQuery.Message.MessageID
+			callerMessageText = update.CallbackQuery.Message.Text
 			bot.AnswerCallbackQuery(tgbotapi.NewCallback(update.CallbackQuery.ID, ""))
 		}
 
 		var output *Output
-		output = &Output{ChatID: chatId, callerMessageId: callerMessageId}
-
-		output.Text = inputText
+		output = &Output{ChatID: chatId, callerMessageId: callerMessageId, callerMessageText: callerMessageText}
 
 		// input requests
 		switch inputText {
@@ -72,6 +72,7 @@ func main() {
 				),
 			))
 		case "edit":
+			output.SetText("edit pannel")
 			output.SetReplyMarkup(tgbotapi.NewInlineKeyboardMarkup(
 				tgbotapi.NewInlineKeyboardRow(
 					tgbotapi.NewInlineKeyboardButtonData("edit", "edited"),
@@ -86,7 +87,23 @@ func main() {
 			switch inputText {
 			case "edited":
 				if callerMessageId != 0 {
-					output.SetEditMessage("edited")
+					markup := tgbotapi.NewInlineKeyboardMarkup(
+						tgbotapi.NewInlineKeyboardRow(
+							tgbotapi.NewInlineKeyboardButtonData("2", "edited2"),
+						),
+					)
+
+					output.SetEditKeyboard(&markup)
+				}
+			case "edited2":
+				if callerMessageId != 0 {
+					markup := tgbotapi.NewInlineKeyboardMarkup(
+						tgbotapi.NewInlineKeyboardRow(
+							tgbotapi.NewInlineKeyboardButtonData("1", "edited"),
+						),
+					)
+
+					output.SetEditKeyboard(&markup)
 				}
 			}
 		}

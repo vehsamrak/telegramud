@@ -5,17 +5,14 @@ import (
 )
 
 type Output struct {
-	ChatID          int64
-	Text            string
-	message         tgbotapi.MessageConfig
-	editMessage     tgbotapi.EditMessageTextConfig
-	ReplyMarkup     interface{}
-	callerMessageId int
-	isEdit          bool
-}
-
-func (output *Output) SetMessage(message tgbotapi.MessageConfig) {
-	output.message = message
+	ChatID               int64
+	Text                 string
+	editMessage          tgbotapi.EditMessageTextConfig
+	ReplyMarkup          interface{}
+	InlineKeyboardMarkup *tgbotapi.InlineKeyboardMarkup
+	callerMessageId      int
+	callerMessageText    string
+	isEdit               bool
 }
 
 func (output *Output) SetReplyMarkup(markup interface{}) {
@@ -26,27 +23,37 @@ func (output *Output) SetText(text string) {
 	output.Text = text
 }
 
-func (output *Output) SetEditMessage(text string) {
+func (output *Output) SetEditText(text string) {
 	output.isEdit = true
 	output.Text = text
+}
+
+func (output *Output) SetEditKeyboard(markup *tgbotapi.InlineKeyboardMarkup) {
+	output.isEdit = true
+	output.InlineKeyboardMarkup = markup
 }
 
 func (output *Output) CreateChattable() tgbotapi.Chattable {
 	var message tgbotapi.Chattable
 
 	if output.isEdit {
+		if output.Text == "" {
+			output.Text = output.callerMessageText
+		}
+
 		message = tgbotapi.EditMessageTextConfig{
 			BaseEdit: tgbotapi.BaseEdit{
-				ChatID:    output.ChatID,
-				MessageID: output.callerMessageId,
+				ChatID:      output.ChatID,
+				ReplyMarkup: output.InlineKeyboardMarkup,
+				MessageID:   output.callerMessageId,
 			},
 			Text: output.Text,
 		}
 	} else {
 		message = &tgbotapi.MessageConfig{
 			BaseChat: tgbotapi.BaseChat{
-				ReplyMarkup:      output.ReplyMarkup,
 				ChatID:           output.ChatID,
+				ReplyMarkup:      output.ReplyMarkup,
 				ReplyToMessageID: 0,
 			},
 			Text: output.Text,
