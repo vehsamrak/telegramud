@@ -17,9 +17,9 @@ func main() {
 
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 
-	u := tgbotapi.NewUpdate(0)
-	u.Timeout = 60
-	updates, _ := bot.GetUpdatesChan(u)
+	updateConfig := tgbotapi.NewUpdate(0)
+	updateConfig.Timeout = 60
+	updates, _ := bot.GetUpdatesChan(updateConfig)
 
 	for update := range updates {
 		if update.Message == nil && update.CallbackQuery == nil {
