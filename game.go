@@ -15,7 +15,7 @@ func main() {
 
 	bot.Debug = false
 
-	log.Printf("Authorized on account %s", bot.Self.UserName)
+	log.Printf("Authorized on account @%s", bot.Self.UserName)
 
 	updateConfig := tgbotapi.NewUpdate(0)
 	updateConfig.Timeout = 60
@@ -43,7 +43,9 @@ func main() {
 		}
 
 		var output *Output
-		output = &Output{ChatID: chatId}
+		output = &Output{ChatID: chatId, callerMessageId: callerMessageId}
+
+		output.Text = inputText
 
 		switch inputText {
 		case "open":
@@ -76,7 +78,7 @@ func main() {
 			))
 		case "edited":
 			if callerMessageId != 0 {
-				output.SetEditMessage(callerMessageId, "edited")
+				output.SetEditMessage("edited")
 			}
 		case "close":
 			output.SetReplyMarkup(tgbotapi.NewRemoveKeyboard(true))

@@ -1,6 +1,8 @@
 package main
 
-import "github.com/go-telegram-bot-api/telegram-bot-api"
+import (
+	"github.com/go-telegram-bot-api/telegram-bot-api"
+)
 
 type Output struct {
 	ChatID          int64
@@ -9,30 +11,30 @@ type Output struct {
 	editMessage     tgbotapi.EditMessageTextConfig
 	ReplyMarkup     interface{}
 	callerMessageId int
+	isEdit          bool
 }
 
-func (output Output) SetMessage(message tgbotapi.MessageConfig) {
+func (output *Output) SetMessage(message tgbotapi.MessageConfig) {
 	output.message = message
 }
 
-func (output Output) SetReplyMarkup(markup interface{}) {
+func (output *Output) SetReplyMarkup(markup interface{}) {
 	output.ReplyMarkup = markup
 }
 
-func (output Output) SetText(text string) {
+func (output *Output) SetText(text string) {
 	output.Text = text
 }
 
-func (output Output) SetEditMessage(callerMessageId int, text string) {
-	output.callerMessageId = callerMessageId
+func (output *Output) SetEditMessage(text string) {
+	output.isEdit = true
 	output.Text = text
-	// output.editMessage = tgbotapi.NewEditMessageText(output.ChatID, callerMessageId, text)
 }
 
-func (output Output) CreateChattable() tgbotapi.Chattable {
+func (output *Output) CreateChattable() tgbotapi.Chattable {
 	var message tgbotapi.Chattable
 
-	if output.editMessage.Text != "" {
+	if output.isEdit {
 		message = tgbotapi.EditMessageTextConfig{
 			BaseEdit: tgbotapi.BaseEdit{
 				ChatID:    output.ChatID,
