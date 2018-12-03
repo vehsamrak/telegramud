@@ -47,7 +47,8 @@ func (output *Output) CreateChattable() tgbotapi.Chattable {
 				ReplyMarkup: output.InlineKeyboardMarkup,
 				MessageID:   output.callerMessageId,
 			},
-			Text: output.Text,
+			Text:      output.Text,
+			ParseMode: "markdown",
 		}
 	} else {
 		message = &tgbotapi.MessageConfig{
@@ -58,6 +59,7 @@ func (output *Output) CreateChattable() tgbotapi.Chattable {
 			},
 			Text: output.Text,
 			DisableWebPagePreview: false,
+			ParseMode:             "markdown",
 		}
 	}
 

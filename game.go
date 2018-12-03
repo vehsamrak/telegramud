@@ -17,96 +17,36 @@ func main() {
 
 	log.Printf("Authorized on account @%s", bot.Self.UserName)
 
-	updateConfig := tgbotapi.NewUpdate(0)
-	updateConfig.Timeout = 60
-	updates, _ := bot.GetUpdatesChan(updateConfig)
+	introUpdateConfig := tgbotapi.NewUpdate(0)
+	introUpdateConfig.Timeout = 60
+	introUpdates, _ := bot.GetUpdatesChan(introUpdateConfig)
 
-	for update := range updates {
+	var commandHandler CommandHandler
+	commandHandler = &StartCommandHandler{}
+
+	for update := range introUpdates {
 		if update.Message == nil && update.CallbackQuery == nil {
 			continue
 		}
 
 		var inputText string
 		var chatId int64
-		var callerMessageId int
-		var callerMessageText string
 
 		if update.Message != nil {
 			inputText = update.Message.Text
 			chatId = update.Message.Chat.ID
 		}
 
-		if update.CallbackQuery != nil {
-			inputText = update.CallbackQuery.Data
-			chatId = update.CallbackQuery.Message.Chat.ID
-			callerMessageId = update.CallbackQuery.Message.MessageID
-			callerMessageText = update.CallbackQuery.Message.Text
-			bot.AnswerCallbackQuery(tgbotapi.NewCallback(update.CallbackQuery.ID, ""))
-		}
-
 		var output *Output
-		output = &Output{ChatID: chatId, callerMessageId: callerMessageId, callerMessageText: callerMessageText}
+		output = &Output{ChatID: chatId}
 
-		// input requests
-		switch inputText {
-		case "open":
-			output.SetReplyMarkup(tgbotapi.NewReplyKeyboard(
-				tgbotapi.NewKeyboardButtonRow(
-					tgbotapi.NewKeyboardButton("1"),
-					tgbotapi.NewKeyboardButton("2"),
-					tgbotapi.NewKeyboardButton("3"),
-				),
-				tgbotapi.NewKeyboardButtonRow(
-					tgbotapi.NewKeyboardButton("4"),
-					tgbotapi.NewKeyboardButton("5"),
-					tgbotapi.NewKeyboardButton("6"),
-				),
-			))
-		case "test":
-			output.SetText("TEST")
-			output.SetReplyMarkup(tgbotapi.NewInlineKeyboardMarkup(
-				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("test", "open"),
-					tgbotapi.NewInlineKeyboardButtonURL("first link", "google.com"),
-					tgbotapi.NewInlineKeyboardButtonURL("second link", "google.com"),
-				),
-			))
-		case "edit":
-			output.SetText("edit pannel")
-			output.SetReplyMarkup(tgbotapi.NewInlineKeyboardMarkup(
-				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("edit", "edited"),
-				),
-			))
-		case "close":
-			output.SetReplyMarkup(tgbotapi.NewRemoveKeyboard(true))
+		commandResult := commandHandler.HandleCommand(inputText)
+
+		if commandResult.CommandHandler != nil {
+			commandHandler = commandResult.CommandHandler
 		}
 
-		// callback requests
-		if callerMessageId != 0 {
-			switch inputText {
-			case "edited":
-				if callerMessageId != 0 {
-					markup := tgbotapi.NewInlineKeyboardMarkup(
-						tgbotapi.NewInlineKeyboardRow(
-							tgbotapi.NewInlineKeyboardButtonData("2", "edited2"),
-						),
-					)
-
-					output.SetEditKeyboard(&markup)
-				}
-			case "edited2":
-				if callerMessageId != 0 {
-					markup := tgbotapi.NewInlineKeyboardMarkup(
-						tgbotapi.NewInlineKeyboardRow(
-							tgbotapi.NewInlineKeyboardButtonData("1", "edited"),
-						),
-					)
-
-					output.SetEditKeyboard(&markup)
-				}
-			}
-		}
+		output.Text = commandResult.Output
 
 		bot.Send(output.CreateChattable())
 	}
