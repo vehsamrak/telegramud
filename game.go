@@ -37,16 +37,13 @@ func main() {
 			chatId = update.Message.Chat.ID
 		}
 
-		var output *Output
-		output = &Output{ChatID: chatId}
-
-		commandResult := commandHandler.HandleCommand(inputText)
+		commandResult := commandHandler.HandleCommand(chatId, inputText)
 
 		if commandResult.CommandHandler != nil {
 			commandHandler = commandResult.CommandHandler
 		}
 
-		output.Text = commandResult.Output
+		output := commandResult.Output
 
 		bot.Send(output.CreateChattable())
 	}

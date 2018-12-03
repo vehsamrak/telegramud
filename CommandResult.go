@@ -1,6 +1,6 @@
 package main
 
 type CommandResult struct {
-	Output         string
+	Output         *Output
 	CommandHandler CommandHandler
 }

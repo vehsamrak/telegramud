@@ -3,8 +3,11 @@ package main
 type TownCommandHandler struct {
 }
 
-func (handler *TownCommandHandler) HandleCommand(commandName string) *CommandResult {
+func (handler *TownCommandHandler) HandleCommand(chatId int64, commandName string) *CommandResult {
 	return &CommandResult{
-		Output: "Вы находитесь в городе.",
+		Output: &Output{
+			Text:   "Вы находитесь в городе.",
+			ChatID: chatId,
+		},
 	}
 }

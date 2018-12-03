@@ -1,5 +1,5 @@
 package main
 
 type CommandHandler interface {
-	HandleCommand(commandName string) *CommandResult
+	HandleCommand(chatId int64, commandName string) *CommandResult
 }

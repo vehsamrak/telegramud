@@ -3,9 +3,12 @@ package main
 type StartCommandHandler struct {
 }
 
-func (handler *StartCommandHandler) HandleCommand(commandName string) *CommandResult {
+func (handler *StartCommandHandler) HandleCommand(chatId int64, commandName string) *CommandResult {
 	return &CommandResult{
-		Output:         "Добро пожаловать на *Экспериментальный Полигон*!",
+		Output: &Output{
+			Text:   "Добро пожаловать на *Экспериментальный Полигон*!",
+			ChatID: chatId,
+		},
 		CommandHandler: &TownCommandHandler{},
 	}
 }
