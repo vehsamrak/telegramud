@@ -5,6 +5,8 @@ import (
 	"os"
 
 	"github.com/go-telegram-bot-api/telegram-bot-api"
+	"math/rand"
+	"time"
 )
 
 func main() {
@@ -12,6 +14,8 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
+
+	rand.Seed(time.Now().Unix())
 
 	bot.Debug = false
 

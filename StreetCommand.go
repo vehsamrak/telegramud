@@ -13,7 +13,7 @@ func (command *StreetCommand) Execute() *CommandResult {
 	commandResult := &CommandResult{}
 	commandResult.SetOutput(&Output{
 		Text: "Портовая улица вымощена мраморными плитами, а по обеим сторонам возвышаются колонны. " +
-			"На улице многолюдно. Справа виднеется таверна \"*Докер*\"",
+			"На улице многолюдно. Справа виднеется таверна \"*Докер*\".",
 		ReplyMarkup: tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
 				tgbotapi.NewInlineKeyboardButtonData("Зайти в таверну", "tavern"),
