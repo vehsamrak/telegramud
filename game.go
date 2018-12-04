@@ -37,6 +37,12 @@ func main() {
 			chatId = update.Message.Chat.ID
 		}
 
+		if update.CallbackQuery != nil {
+			inputText = update.CallbackQuery.Data
+			chatId = update.CallbackQuery.Message.Chat.ID
+			bot.AnswerCallbackQuery(tgbotapi.NewCallback(update.CallbackQuery.ID, ""))
+		}
+
 		commandResult := commandHandler.HandleCommand(chatId, inputText)
 
 		if commandResult.CommandHandler != nil {
@@ -44,6 +50,7 @@ func main() {
 		}
 
 		output := commandResult.Output
+		output.ChatID = chatId
 
 		bot.Send(output.CreateChattable())
 	}
