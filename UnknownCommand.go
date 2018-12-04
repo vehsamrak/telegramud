@@ -8,5 +8,8 @@ func (command *UnknownCommand) Name() string {
 }
 
 func (command *UnknownCommand) Execute() *CommandResult {
-	return &CommandResult{Output: &Output{Text: "Неизвестная команда"}}
+	commandResult := &CommandResult{}
+	commandResult.SetOutput(&Output{Text: "Неизвестная команда"})
+
+	return commandResult
 }

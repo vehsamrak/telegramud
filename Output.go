@@ -33,7 +33,7 @@ func (output *Output) SetEditKeyboard(markup *tgbotapi.InlineKeyboardMarkup) {
 	output.InlineKeyboardMarkup = markup
 }
 
-func (output *Output) CreateChattable() tgbotapi.Chattable {
+func (output *Output) GenerateChattable() tgbotapi.Chattable {
 	var message tgbotapi.Chattable
 
 	if output.isEdit {

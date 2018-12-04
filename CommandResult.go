@@ -1,6 +1,19 @@
 package main
 
 type CommandResult struct {
-	Output         *Output
-	CommandHandler CommandHandler
+	output             *Output
+	CommandHandler     CommandHandler
+	additionalCommands []GameCommand
+}
+
+func (commandResult *CommandResult) Output() *Output {
+	return commandResult.output
+}
+
+func (commandResult *CommandResult) SetOutput(output *Output) {
+	commandResult.output = output
+}
+
+func (commandResult *CommandResult) AdditionalCommands() []GameCommand {
+	return commandResult.additionalCommands
 }

@@ -43,15 +43,29 @@ func main() {
 			bot.AnswerCallbackQuery(tgbotapi.NewCallback(update.CallbackQuery.ID, ""))
 		}
 
-		commandResult := commandHandler.HandleCommand(chatId, inputText)
+		commandResult := commandHandler.HandleCommand(inputText)
 
 		if commandResult.CommandHandler != nil {
 			commandHandler = commandResult.CommandHandler
 		}
 
-		output := commandResult.Output
+		output := commandResult.Output()
 		output.ChatID = chatId
 
-		bot.Send(output.CreateChattable())
+		bot.Send(output.GenerateChattable())
+
+		for _, command := range commandResult.AdditionalCommands() {
+			commandResult := command.Execute()
+			output := commandResult.Output()
+			output.ChatID = chatId
+			bot.Send(output.GenerateChattable())
+		}
 	}
+}
+
+func sendCommand(bot tgbotapi.BotAPI, chatId int64, command GameCommand) {
+	commandResult := command.Execute()
+	output := commandResult.Output()
+	output.ChatID = chatId
+	bot.Send(output.GenerateChattable())
 }

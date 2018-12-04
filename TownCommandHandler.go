@@ -3,7 +3,7 @@ package main
 type TownCommandHandler struct {
 }
 
-func (handler *TownCommandHandler) HandleCommand(chatId int64, commandName string) *CommandResult {
+func (handler *TownCommandHandler) HandleCommand(commandName string) *CommandResult {
 	var command GameCommand
 
 	switch commandName {

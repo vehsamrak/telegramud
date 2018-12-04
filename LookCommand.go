@@ -10,7 +10,8 @@ func (command *LookCommand) Name() string {
 }
 
 func (command *LookCommand) Execute() *CommandResult {
-	return &CommandResult{Output: &Output{
+	commandResult := &CommandResult{}
+	commandResult.SetOutput(&Output{
 		Text: "Вы находитесь в шумной городской таверне.",
 		ReplyMarkup: tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
@@ -18,5 +19,7 @@ func (command *LookCommand) Execute() *CommandResult {
 				tgbotapi.NewInlineKeyboardButtonData("Выйти на улицу", "exit"),
 			),
 		),
-	}}
+	})
+
+	return commandResult
 }
