@@ -58,18 +58,11 @@ func main() {
 
 		bot.Send(output.GenerateChattable())
 
-		for _, command := range commandResult.AdditionalCommands() {
+		for _, command := range commandResult.AfterCommands() {
 			commandResult := command.Execute()
 			output := commandResult.Output()
 			output.ChatID = chatId
 			bot.Send(output.GenerateChattable())
 		}
 	}
-}
-
-func sendCommand(bot tgbotapi.BotAPI, chatId int64, command GameCommand) {
-	commandResult := command.Execute()
-	output := commandResult.Output()
-	output.ChatID = chatId
-	bot.Send(output.GenerateChattable())
 }

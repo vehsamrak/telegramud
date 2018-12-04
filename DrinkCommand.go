@@ -11,7 +11,7 @@ func (command *DrinkCommand) Name() string {
 
 func (command *DrinkCommand) Execute() *CommandResult {
 	commandResult := &CommandResult{}
-	commandResult.additionalCommands = append(commandResult.additionalCommands, &TavernCommand{})
+	commandResult.AddCommand(&TavernCommand{})
 	commandResult.SetOutput(&Output{
 		Text: command.generateTavernPhrase(),
 	})

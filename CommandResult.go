@@ -14,6 +14,10 @@ func (commandResult *CommandResult) SetOutput(output *Output) {
 	commandResult.output = output
 }
 
-func (commandResult *CommandResult) AdditionalCommands() []GameCommand {
+func (commandResult *CommandResult) AfterCommands() []GameCommand {
 	return commandResult.additionalCommands
+}
+
+func (commandResult *CommandResult) AddCommand(command GameCommand) {
+	commandResult.additionalCommands = append(commandResult.additionalCommands, command)
 }
