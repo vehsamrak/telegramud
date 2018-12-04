@@ -6,10 +6,10 @@ type StartCommandHandler struct {
 func (handler *StartCommandHandler) HandleCommand(commandName string) *CommandResult {
 	commandHandler := &TownCommandHandler{}
 	commandResult := &CommandResult{CommandHandler: commandHandler}
-	commandResult.additionalCommands = append(commandResult.additionalCommands, &LookCommand{})
+	commandResult.additionalCommands = append(commandResult.additionalCommands, &TavernCommand{})
 
 	commandResult.SetOutput(&Output{
-		Text: "Добро пожаловать на *Экспериментальный Полигон*!",
+		Text: "Добро пожаловать в *Экспериментальный Полигон*!",
 	})
 
 	return commandResult

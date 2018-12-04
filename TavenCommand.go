@@ -2,21 +2,21 @@ package main
 
 import "github.com/go-telegram-bot-api/telegram-bot-api"
 
-type LookCommand struct {
+type TavernCommand struct {
 }
 
-func (command *LookCommand) Name() string {
-	return "look"
+func (command *TavernCommand) Name() string {
+	return "tavern"
 }
 
-func (command *LookCommand) Execute() *CommandResult {
+func (command *TavernCommand) Execute() *CommandResult {
 	commandResult := &CommandResult{}
 	commandResult.SetOutput(&Output{
 		Text: "Вы находитесь в шумной городской таверне.",
 		ReplyMarkup: tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
 				tgbotapi.NewInlineKeyboardButtonData("Заказать выпивку", "drink"),
-				tgbotapi.NewInlineKeyboardButtonData("Выйти на улицу", "exit"),
+				tgbotapi.NewInlineKeyboardButtonData("Выйти на улицу", "street"),
 			),
 		),
 	})

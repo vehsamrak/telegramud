@@ -7,8 +7,12 @@ func (handler *TownCommandHandler) HandleCommand(commandName string) *CommandRes
 	var command GameCommand
 
 	switch commandName {
-	case "look":
-		command = &LookCommand{}
+	case "tavern":
+		command = &TavernCommand{}
+	case "drink":
+		command = &DrinkCommand{}
+	case "street":
+		command = &StreetCommand{}
 	default:
 		command = &UnknownCommand{}
 	}
