@@ -2,19 +2,22 @@ package main
 
 import (
 	"github.com/go-telegram-bot-api/telegram-bot-api"
+	"github.com/vehsamrak/telegramud/entity"
 )
 
+const InitialRoomId = "tavern"
+
 type PlayerProvider struct {
-	players map[string]*Player
+	players map[string]*entity.Player
 }
 
 func (provider PlayerProvider) Init() *PlayerProvider {
-	provider.players = make(map[string]*Player)
+	provider.players = make(map[string]*entity.Player)
 
 	return &provider
 }
 
-func (provider *PlayerProvider) FromTelegramUpdate(update tgbotapi.Update) *Player {
+func (provider *PlayerProvider) FromTelegramUpdate(update tgbotapi.Update) *entity.Player {
 	var chatId int64
 	var username string
 
@@ -26,10 +29,10 @@ func (provider *PlayerProvider) FromTelegramUpdate(update tgbotapi.Update) *Play
 		username = update.CallbackQuery.From.UserName
 	}
 
-	var player *Player
+	var player *entity.Player
 
 	if provider.players[username] == nil {
-		player = &Player{ChatId: chatId}
+		player = &entity.Player{ChatId: chatId, RoomId: InitialRoomId}
 		provider.players[username] = player
 	} else {
 		player = provider.players[username]
@@ -38,6 +41,6 @@ func (provider *PlayerProvider) FromTelegramUpdate(update tgbotapi.Update) *Play
 	return player
 }
 
-func (provider *PlayerProvider) AllPlayers() map[string]*Player {
+func (provider *PlayerProvider) AllPlayers() map[string]*entity.Player {
 	return provider.players
 }

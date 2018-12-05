@@ -1,16 +1,19 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"math/rand"
 	"os"
 	"time"
 
 	"github.com/go-telegram-bot-api/telegram-bot-api"
+	"github.com/vehsamrak/telegramud/room"
 )
 
 var (
 	playerProvider = PlayerProvider{}.Init()
+	roomProvider   = room.RoomProvider{}.Init()
 )
 
 func main() {
@@ -50,6 +53,11 @@ func main() {
 			chatId = update.CallbackQuery.Message.Chat.ID
 			bot.AnswerCallbackQuery(tgbotapi.NewCallback(update.CallbackQuery.ID, ""))
 		}
+
+		player := playerProvider.FromTelegramUpdate(update)
+		room := roomProvider.FindById(player.RoomId)
+
+		fmt.Printf("%#v\n", room)
 
 		commandResult := commandHandler.HandleCommand(inputText)
 
