@@ -2,11 +2,15 @@ package main
 
 import (
 	"log"
+	"math/rand"
 	"os"
+	"time"
 
 	"github.com/go-telegram-bot-api/telegram-bot-api"
-	"math/rand"
-	"time"
+)
+
+var (
+	playerProvider = PlayerProvider{}.Init()
 )
 
 func main() {
