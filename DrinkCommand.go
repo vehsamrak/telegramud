@@ -1,17 +1,29 @@
 package main
 
-import "math/rand"
+import (
+	"github.com/vehsamrak/telegramud/entity"
+	"math/rand"
+)
 
 type DrinkCommand struct {
+	commandParameters []string
+	player            *entity.Player
 }
 
 func (command *DrinkCommand) Name() string {
 	return "drink"
 }
 
+func (command *DrinkCommand) SetParameters(commandParameters []string) {
+	command.commandParameters = commandParameters
+}
+
+func (command *DrinkCommand) SetPlayer(player *entity.Player) {
+	command.player = player
+}
+
 func (command *DrinkCommand) Execute() *CommandResult {
 	commandResult := &CommandResult{}
-	commandResult.AddCommand(&TavernCommand{})
 	commandResult.SetOutput(&Output{
 		Text: command.generateTavernPhrase(),
 	})

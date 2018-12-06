@@ -1,5 +1,7 @@
 package main
 
+import "github.com/vehsamrak/telegramud/entity"
+
 type CommandHandler interface {
-	HandleCommand(commandName string) *CommandResult
+	HandleCommand(player *entity.Player, commandName string, commandParameters []string) *CommandResult
 }

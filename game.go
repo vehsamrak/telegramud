@@ -1,14 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"math/rand"
 	"os"
 	"time"
 
+	"bytes"
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/vehsamrak/telegramud/room"
+	"strings"
 )
 
 var (
@@ -55,20 +56,21 @@ func main() {
 		}
 
 		player := playerProvider.FromTelegramUpdate(update)
-		room := roomProvider.FindById(player.RoomId)
 
-		fmt.Printf("%#v\n", room)
+		commandName, commandParameters := parseCommand(inputText)
+		log.Printf("[%s] %s %s", player.Name, commandName, commandParameters)
 
-		commandResult := commandHandler.HandleCommand(inputText)
+		commandResult := commandHandler.HandleCommand(player, commandName, commandParameters)
 
 		if commandResult.CommandHandler != nil {
 			commandHandler = commandResult.CommandHandler
 		}
 
 		output := commandResult.Output()
-		output.ChatID = chatId
-
-		bot.Send(output.GenerateChattable())
+		if output != nil {
+			output.ChatID = chatId
+			bot.Send(output.GenerateChattable())
+		}
 
 		for _, command := range commandResult.AfterCommands() {
 			commandResult := command.Execute()
@@ -77,4 +79,13 @@ func main() {
 			bot.Send(output.GenerateChattable())
 		}
 	}
+}
+
+func parseCommand(rawCommand string) (commandName string, commandParameters []string) {
+	rawCommand = strings.TrimSpace(string(bytes.Trim([]byte(rawCommand), "\r\n\x00")))
+	commandWithParameters := strings.Fields(rawCommand)
+
+	commandName = strings.ToLower(commandWithParameters[0])
+
+	return commandName, commandWithParameters[1:]
 }

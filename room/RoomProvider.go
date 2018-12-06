@@ -1,5 +1,7 @@
 package room
 
+import "github.com/vehsamrak/telegramud/entity"
+
 type RoomProvider struct {
 	rooms []*Room
 }
@@ -22,4 +24,8 @@ func (provider *RoomProvider) FindById(roomName string) *Room {
 	}
 
 	return nil
+}
+
+func (provider *RoomProvider) FindByPlayer(player *entity.Player) *Room {
+	return provider.FindById(player.RoomId)
 }
