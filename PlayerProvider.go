@@ -32,7 +32,7 @@ func (provider *PlayerProvider) FromTelegramUpdate(update tgbotapi.Update) *enti
 	var player *entity.Player
 
 	if provider.players[username] == nil {
-		player = &entity.Player{ChatId: chatId, RoomId: InitialRoomId}
+		player = &entity.Player{Name: username, ChatId: chatId, RoomId: InitialRoomId}
 		provider.players[username] = player
 	} else {
 		player = provider.players[username]
