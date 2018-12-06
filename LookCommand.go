@@ -27,8 +27,6 @@ func (command *LookCommand) Execute() (commandResult *CommandResult) {
 
 	room := roomProvider.FindByPlayer(command.player)
 
-	fmt.Printf("%#v\n", "test")
-
 	commandResult.SetOutput(&Output{
 		Text: fmt.Sprintf("*%s*\n%s", room.Title(), room.Description()),
 	})

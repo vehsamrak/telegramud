@@ -82,6 +82,12 @@ func main() {
 }
 
 func parseCommand(rawCommand string) (commandName string, commandParameters []string) {
+	commandAliasParser := &CommandAliasParser{}
+	alias, err := commandAliasParser.Parse(rawCommand)
+	if err == nil {
+		rawCommand = alias
+	}
+
 	rawCommand = strings.TrimSpace(string(bytes.Trim([]byte(rawCommand), "\r\n\x00")))
 	commandWithParameters := strings.Fields(rawCommand)
 
