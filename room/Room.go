@@ -4,7 +4,7 @@ type Room struct {
 	id          string
 	title       string
 	description string
-	ways        []string
+	actions     []*RoomAction
 }
 
 func (room *Room) Id() string {
@@ -17,4 +17,8 @@ func (room *Room) Title() string {
 
 func (room *Room) Description() string {
 	return room.description
+}
+
+func (room *Room) Actions() []*RoomAction {
+	return room.actions
 }

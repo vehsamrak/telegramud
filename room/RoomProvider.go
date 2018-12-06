@@ -8,8 +8,19 @@ type RoomProvider struct {
 
 func (provider RoomProvider) Init() *RoomProvider {
 	provider.rooms = []*Room{
-		{id: "tavern", title: "Таверна \"*Пьяный Докер*\"", description: "Вы находитесь в шумной городской таверне.", ways: []string{"street"}},
-		{id: "street", title: "Портовая улица", description: "Портовая улица вымощена мраморными плитами, а по обеим сторонам возвышаются колонны. На улице многолюдно. Справа виднеется таверна \"Докер\".", ways: []string{"tavern"}},
+		{id: "tavern", title: "Таверна \"Пьяный Докер\"",
+			description: "Вы находитесь в шумной городской таверне.",
+			actions: []*RoomAction{
+				{commandName: "drink", commandTitle: "Заказать выпивку"},
+				{commandName: "walk street", commandTitle: "Выйти на улицу"},
+			},
+		},
+		{id: "street", title: "Портовая улица",
+			description: "Портовая улица вымощена мраморными плитами, а по обеим сторонам возвышаются колонны. На улице многолюдно. Справа виднеется таверна \"Докер\".",
+			actions: []*RoomAction{
+				{commandName: "walk tavern", commandTitle: "Зайти в таверну"},
+			},
+		},
 	}
 
 	return &provider

@@ -9,6 +9,8 @@ func (parser *CommandAliasParser) Parse(alias string) (commandName string, err e
 	aliasMap := map[string]string{
 		"Осмотреться":      "look",
 		"Заказать выпивку": "drink",
+		"Зайти в таверну":  "walk tavern",
+		"Выйти на улицу":   "walk street",
 	}
 
 	if command, ok := aliasMap[alias]; ok {

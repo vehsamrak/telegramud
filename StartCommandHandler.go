@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/vehsamrak/telegramud/entity"
 )
 
@@ -17,13 +16,8 @@ func (handler *StartCommandHandler) HandleCommand(
 
 	commandResult.SetOutput(&Output{
 		Text: "Добро пожаловать в *Экспериментальный Полигон*!",
-		ReplyMarkup: tgbotapi.NewReplyKeyboard(
-			tgbotapi.NewKeyboardButtonRow(
-				tgbotapi.NewKeyboardButton("Осмотреться"),
-				tgbotapi.NewKeyboardButton("Заказать выпивку"),
-			),
-		),
 	})
+	commandResult.AddCommand(&LookCommand{player: player})
 
 	return commandResult
 }
