@@ -32,7 +32,7 @@ func (command *LookCommand) Execute() (commandResult *CommandResult) {
 	var exitKeyboardRow []tgbotapi.KeyboardButton
 
 	for _, roomAction := range room.Actions() {
-		exitButton := tgbotapi.NewKeyboardButton(roomAction.CommandTitle())
+		exitButton := tgbotapi.NewKeyboardButton(roomAction.CommandName())
 		exitKeyboardRow = append(exitKeyboardRow, exitButton)
 	}
 

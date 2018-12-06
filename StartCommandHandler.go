@@ -15,7 +15,7 @@ func (handler *StartCommandHandler) HandleCommand(
 	commandResult := &CommandResult{CommandHandler: &TownCommandHandler{}}
 
 	commandResult.SetOutput(&Output{
-		Text: "Добро пожаловать в *Экспериментальный Полигон*!",
+		Text: "Добро пожаловать в *Портовый Город*!",
 	})
 	commandResult.AddCommand(&LookCommand{player: player})
 
