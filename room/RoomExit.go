@@ -1,9 +1,14 @@
 package room
 
-type RoomAction struct {
-	commandName string
+type RoomExit struct {
+	destinationRoomId string
+	destinationName   string
 }
 
-func (roomExit *RoomAction) CommandName() string {
-	return roomExit.commandName
+func (roomExit *RoomExit) DestinationRoomId() string {
+	return roomExit.destinationRoomId
+}
+
+func (roomExit *RoomExit) DestinationName() string {
+	return roomExit.destinationName
 }

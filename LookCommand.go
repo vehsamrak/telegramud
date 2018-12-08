@@ -26,23 +26,44 @@ func (command *LookCommand) SetPlayer(player *entity.Player) {
 func (command *LookCommand) Execute() (commandResult *CommandResult) {
 	commandResult = &CommandResult{}
 
-	room := roomProvider.FindByPlayer(command.player)
+	allRooms := roomProvider.FindAll()
+	room := allRooms[command.player.RoomId]
 
-	var exitKeyboard [][]tgbotapi.KeyboardButton
-	var exitKeyboardRow []tgbotapi.KeyboardButton
+	var keyboard [][]tgbotapi.KeyboardButton
+	var actionsKeyboardRow []tgbotapi.KeyboardButton
+	var exitsKeyboardRow []tgbotapi.KeyboardButton
 
 	for _, roomAction := range room.Actions() {
-		exitButton := tgbotapi.NewKeyboardButton(roomAction.CommandName())
-		exitKeyboardRow = append(exitKeyboardRow, exitButton)
+		actionButton := tgbotapi.NewKeyboardButton(roomAction.ActionName())
+		actionsKeyboardRow = append(actionsKeyboardRow, actionButton)
 	}
 
-	exitKeyboard = append(exitKeyboard, exitKeyboardRow)
+	for _, roomExit := range room.Exits() {
+		var destinationName string
+
+		if roomExit.DestinationName() == "" {
+			destinationName = allRooms[roomExit.DestinationRoomId()].Title()
+		} else {
+			destinationName = roomExit.DestinationName()
+		}
+
+		exitButton := tgbotapi.NewKeyboardButton(destinationName)
+		exitsKeyboardRow = append(exitsKeyboardRow, exitButton)
+	}
+
+	if len(actionsKeyboardRow) > 0 {
+		keyboard = append(keyboard, actionsKeyboardRow)
+	}
+
+	if len(exitsKeyboardRow) > 0 {
+		keyboard = append(keyboard, exitsKeyboardRow)
+	}
 
 	commandResult.SetOutput(&Output{
 		Text: fmt.Sprintf("*%s*\n%s", room.Title(), room.Description()),
 		ReplyMarkup: tgbotapi.ReplyKeyboardMarkup{
 			ResizeKeyboard: true,
-			Keyboard:       exitKeyboard,
+			Keyboard:       keyboard,
 		},
 	})
 
