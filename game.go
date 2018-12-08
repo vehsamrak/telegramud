@@ -35,6 +35,7 @@ func main() {
 
 	var commandHandler CommandHandler
 	commandHandler = &StartCommandHandler{}
+	commandAliasParser := CommandAliasParser{}.Init()
 
 	for update := range introUpdates {
 		if update.Message == nil && update.CallbackQuery == nil {
@@ -57,7 +58,7 @@ func main() {
 
 		player := playerProvider.FromTelegramUpdate(update)
 
-		commandName, commandParameters := parseCommand(inputText)
+		commandName, commandParameters := parseCommand(commandAliasParser, inputText)
 		log.Printf("[%s] %s %s", player.Name, commandName, commandParameters)
 
 		commandResult := commandHandler.HandleCommand(player, commandName, commandParameters)
@@ -81,8 +82,13 @@ func main() {
 	}
 }
 
-func parseCommand(rawCommand string) (commandName string, commandParameters []string) {
-	commandAliasParser := &CommandAliasParser{}
+func parseCommand(
+	commandAliasParser *CommandAliasParser,
+	rawCommand string,
+) (
+	commandName string,
+	commandParameters []string,
+) {
 	alias, err := commandAliasParser.Parse(rawCommand)
 	if err == nil {
 		rawCommand = alias
