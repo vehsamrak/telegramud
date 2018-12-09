@@ -33,8 +33,7 @@ func main() {
 	introUpdateConfig.Timeout = 60
 	introUpdates, _ := bot.GetUpdatesChan(introUpdateConfig)
 
-	var commandHandler CommandHandler
-	commandHandler = &StartCommandHandler{}
+	commandHandler := &CommandHandler{}
 	commandAliasParser := CommandAliasParser{}.Init()
 
 	for update := range introUpdates {
@@ -62,10 +61,6 @@ func main() {
 		log.Printf("[%s] %s %s", player.Name(), commandName, commandParameters)
 
 		commandResult := commandHandler.HandleCommand(player, commandName, commandParameters)
-
-		if commandResult.CommandHandler != nil {
-			commandHandler = commandResult.CommandHandler
-		}
 
 		output := commandResult.Output(player)
 		if output != nil {

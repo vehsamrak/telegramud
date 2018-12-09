@@ -39,24 +39,26 @@ func (parser CommandAliasParser) Init() *CommandAliasParser {
 func (parser *CommandAliasParser) Parse(input string) (commandName string, err error) {
 	if command, ok := parser.aliasMap[input]; ok {
 		commandName = command
-	} else if true {
-		aliases := map[string]string{
-			"Осмотреться": "look",
-			"Персонаж":    "character",
-			"Инвентарь":   "inventory",
-		}
-
-		for aliasName, aliasReferenceName := range aliases {
-			inputCommandWithParameters := strings.Fields(input)
-			inputCommand := inputCommandWithParameters[0]
-
-			if inputCommand == aliasName {
-				commandName = aliasReferenceName
-			}
-		}
-	} else {
-		err = errors.New("no alias was found")
+		return
 	}
+
+	aliases := map[string]string{
+		"Осмотреться": "look",
+		"Персонаж":    "character",
+		"Инвентарь":   "inventory",
+	}
+
+	for aliasName, aliasReferenceName := range aliases {
+		inputCommandWithParameters := strings.Fields(input)
+		inputCommand := inputCommandWithParameters[0]
+
+		if inputCommand == aliasName {
+			commandName = aliasReferenceName
+			return
+		}
+	}
+
+	err = errors.New("no alias was found")
 
 	return
 }

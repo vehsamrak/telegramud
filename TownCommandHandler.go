@@ -1,29 +1,21 @@
 package main
 
-import "github.com/vehsamrak/telegramud/entity"
+import (
+	"github.com/vehsamrak/telegramud/entity"
+)
 
-type TownCommandHandler struct {
+type CommandHandler struct {
 }
 
-func (handler *TownCommandHandler) HandleCommand(
+func (handler *CommandHandler) HandleCommand(
 	player *entity.Player,
 	commandName string,
 	commandParameters []string,
 ) *CommandResult {
-	var command GameCommand
+	commandProvider := CommandProvider{}.Init()
+	command := commandProvider.FindCommand(commandName)
 
-	switch commandName {
-	case "look":
-		command = &LookCommand{}
-	case "drink":
-		command = &DrinkCommand{}
-	case "walk":
-		command = &WalkCommand{}
-	case "character":
-		command = &CharacterCommand{}
-	case "inventory":
-		command = &InventoryCommand{}
-	default:
+	if command == nil {
 		command = &UnknownCommand{}
 	}
 
