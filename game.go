@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"bytes"
+	"fmt"
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/vehsamrak/telegramud/room"
 	"strings"
@@ -67,7 +68,7 @@ func main() {
 			commandHandler = commandResult.CommandHandler
 		}
 
-		output := commandResult.Output()
+		output := commandResult.Output(player)
 		if output != nil {
 			output.ChatID = chatId
 			bot.Send(output.GenerateChattable())
@@ -75,7 +76,7 @@ func main() {
 
 		for _, command := range commandResult.AfterCommands() {
 			commandResult := command.Execute()
-			output := commandResult.Output()
+			output := commandResult.Output(player)
 			output.ChatID = chatId
 			bot.Send(output.GenerateChattable())
 		}

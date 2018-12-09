@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"strings"
 )
 
 type CommandAliasParser struct {
@@ -9,12 +10,9 @@ type CommandAliasParser struct {
 }
 
 func (parser CommandAliasParser) Init() *CommandAliasParser {
-	aliasMap := map[string]string{
-		"Осмотреться": "look",
-	}
+	aliasMap := map[string]string{}
 
 	allRooms := roomProvider.FindAll()
-
 	for _, room := range allRooms {
 		aliasMap[room.Title()] = "walk " + room.Id()
 		for _, roomAction := range room.Actions() {
@@ -38,9 +36,24 @@ func (parser CommandAliasParser) Init() *CommandAliasParser {
 	return &parser
 }
 
-func (parser *CommandAliasParser) Parse(alias string) (commandName string, err error) {
-	if command, ok := parser.aliasMap[alias]; ok {
+func (parser *CommandAliasParser) Parse(input string) (commandName string, err error) {
+	if command, ok := parser.aliasMap[input]; ok {
 		commandName = command
+	} else if true {
+		aliases := map[string]string{
+			"Осмотреться": "look",
+			"Персонаж":    "character",
+			"Инвентарь":   "inventory",
+		}
+
+		for aliasName, aliasReferenceName := range aliases {
+			inputCommandWithParameters := strings.Fields(input)
+			inputCommand := inputCommandWithParameters[0]
+
+			if inputCommand == aliasName {
+				commandName = aliasReferenceName
+			}
+		}
 	} else {
 		err = errors.New("no alias was found")
 	}

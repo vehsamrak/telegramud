@@ -19,6 +19,10 @@ func (handler *TownCommandHandler) HandleCommand(
 		command = &DrinkCommand{}
 	case "walk":
 		command = &WalkCommand{}
+	case "character":
+		command = &CharacterCommand{}
+	case "inventory":
+		command = &InventoryCommand{}
 	default:
 		command = &UnknownCommand{}
 	}

@@ -38,6 +38,10 @@ func (command *LookCommand) Execute() (commandResult *CommandResult) {
 		actionsKeyboardRow = append(actionsKeyboardRow, actionButton)
 	}
 
+	if len(actionsKeyboardRow) > 0 {
+		keyboard = append(keyboard, actionsKeyboardRow)
+	}
+
 	for _, roomExit := range room.Exits() {
 		var destinationName string
 
@@ -49,10 +53,6 @@ func (command *LookCommand) Execute() (commandResult *CommandResult) {
 
 		exitButton := tgbotapi.NewKeyboardButton(destinationName)
 		exitsKeyboardRow = append(exitsKeyboardRow, exitButton)
-	}
-
-	if len(actionsKeyboardRow) > 0 {
-		keyboard = append(keyboard, actionsKeyboardRow)
 	}
 
 	if len(exitsKeyboardRow) > 0 {
