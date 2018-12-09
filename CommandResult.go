@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/vehsamrak/telegramud/entity"
 )
@@ -21,8 +22,15 @@ func (commandResult *CommandResult) Output(player *entity.Player) *Output {
 			keyboard := replyMarkup.Keyboard
 
 			characteristicsKeyboardRow := []tgbotapi.KeyboardButton{
-				tgbotapi.NewKeyboardButton("Персонаж | 1 уровень | 100/100 жизнь"),
-				tgbotapi.NewKeyboardButton("Инвентарь | 100 $"),
+				tgbotapi.NewKeyboardButton(
+					fmt.Sprintf(
+						"Персонаж | %d уровень | %d/%d жизнь",
+						player.Level(),
+						player.HP(),
+						player.MaxHP(),
+					),
+				),
+				tgbotapi.NewKeyboardButton(fmt.Sprintf("Инвентарь | %d $", player.Money())),
 			}
 
 			if len(characteristicsKeyboardRow) > 0 {

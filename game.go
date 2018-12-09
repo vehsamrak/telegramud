@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"bytes"
-	"fmt"
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/vehsamrak/telegramud/room"
 	"strings"
@@ -60,7 +59,7 @@ func main() {
 		player := playerProvider.FromTelegramUpdate(update)
 
 		commandName, commandParameters := parseCommand(commandAliasParser, inputText)
-		log.Printf("[%s] %s %s", player.Name, commandName, commandParameters)
+		log.Printf("[%s] %s %s", player.Name(), commandName, commandParameters)
 
 		commandResult := commandHandler.HandleCommand(player, commandName, commandParameters)
 

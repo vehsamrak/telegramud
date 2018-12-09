@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/vehsamrak/telegramud/entity"
 )
 
@@ -24,7 +25,7 @@ func (command *InventoryCommand) SetPlayer(player *entity.Player) {
 func (command *InventoryCommand) Execute() (commandResult *CommandResult) {
 	commandResult = &CommandResult{}
 	commandResult.SetOutput(&Output{
-		Text: "Деньги: 100 $\nПредметы:\nПусто",
+		Text: fmt.Sprintf("Деньги: %d $\nПредметы:\nПусто", command.player.Money()),
 	})
 
 	return

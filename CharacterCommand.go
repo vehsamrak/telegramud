@@ -26,11 +26,14 @@ func (command *CharacterCommand) Execute() (commandResult *CommandResult) {
 	commandResult = &CommandResult{}
 	commandResult.SetOutput(&Output{
 		Text: fmt.Sprintf(
-			"Имя: %s\nУровень: 1\n"+
+			"Имя: %s\nУровень: %d\n"+
 				"Раса: человек\n"+
 				"Профессия: не выбрана\n"+
-				"Здоровье: 100 / 100",
-			command.player.Name,
+				"Здоровье: %d / %d",
+			command.player.Name(),
+			command.player.Level(),
+			command.player.HP(),
+			command.player.MaxHP(),
 		),
 	})
 
